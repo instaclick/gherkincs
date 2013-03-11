@@ -1,7 +1,5 @@
 <?php
 namespace IC\Gherkinics\Model;
 
-final class Scenario extends Token
-{
-    // NOP
-}
+class Scenario extends Token
+{}

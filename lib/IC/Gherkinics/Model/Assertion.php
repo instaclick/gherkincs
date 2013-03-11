@@ -1,5 +1,5 @@
 <?php
 namespace IC\Gherkinics\Model;
 
-final class Assertion extends Token
+class Assertion extends Token
 {}

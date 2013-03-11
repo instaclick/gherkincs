@@ -7,6 +7,6 @@
         "php": ">=5.3.6"
     },
     "require-dev": {
-        "phpunit/PHPUnit": "3.7.1"
+        "phpunit/PHPUnit": ">=3.7.x-dev"
     }
 }

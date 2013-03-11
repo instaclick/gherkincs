@@ -95,7 +95,7 @@ class SemanticAnalyzer implements AnalyzerInterface
         }
 
         if (
-            $this->previousToken instanceof Assertion
+            $this->previousToken instanceof Model\Assertion
             && ! (
                 $token instanceof Model\Continuation
                 || $token instanceof Model\Precondition

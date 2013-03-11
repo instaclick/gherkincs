@@ -1,7 +1,7 @@
 <?php
 namespace IC\Gherkinics\Model;
 
-final class TagLine extends Token
+class TagLine extends Token
 {
     /**
      * @var array

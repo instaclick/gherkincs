@@ -1,5 +1,5 @@
 <?php
 namespace IC\Gherkinics\Model;
 
-final class Blank extends Token
+class Blank extends Token
 {}

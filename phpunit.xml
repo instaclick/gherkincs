@@ -1,0 +1,12 @@
+<phpunit
+    bootstrap="autoloader.php"
+    colors="true"
+    stopOnError="true"
+    stopOnFailure="true">
+    <testsuites>
+        <testsuite name="Gherkin CS">
+            <directory>lib/IC/Gherkinics/Test</directory>
+            <directory>lib/IC/Gherkinics/Test/*</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
