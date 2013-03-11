@@ -44,8 +44,6 @@ final class AnalyzerManager
      * Analyze the content
      *
      * @param string $content
-     *
-     * @throws \Cuke\Exception\`
      */
     public function analyze($content)
     {

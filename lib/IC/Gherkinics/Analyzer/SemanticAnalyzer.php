@@ -14,9 +14,19 @@ use IC\Gherkinics\Model;
  */
 class SemanticAnalyzer implements AnalyzerInterface
 {
+    /**
+     * @var \IC\Gherkinics\Model\Token
+     */
+    private $previousToken = null;
+
+    public function setPreviousToken(Model\Token $previousToken)
+    {
+        $this->previousToken = $previousToken;
+    }
+
     public function analyze(array $tokenList, FileFeedback $fileFeedback)
     {
-        $previousToken = null;
+        $this->previousToken = null;
 
         foreach ($tokenList as $token) {
             $fileFeedback->setToken($token);
@@ -33,82 +43,91 @@ class SemanticAnalyzer implements AnalyzerInterface
             }
 
             if ($token instanceof Model\Background || $token instanceof Model\Scenario) {
-                $previousToken = null;
+                $this->previousToken = null;
 
                 continue;
             }
 
-            if (
-                ! $previousToken
-                && ! (
-                    $token instanceof Model\Precondition
-                    || $token instanceof Model\Action
-                    || $token instanceof Model\Assertion
-                )
-            ) {
-                $fileFeedback->add($token->makeComment('The continuation must not be at the beginning of the block'));
-            }
-
-            if (
-                $previousToken instanceof Model\Precondition
-                && ! (
-                    $token instanceof Model\Continuation
-                    || $token instanceof Model\Action
-                    || $token instanceof Model\Assertion
-                )
-            ) {
-                $fileFeedback->add($token->makeComment('The precondition should be followed by an action, assertion or continuation'));
-            }
-
-            if (
-                $previousToken instanceof Model\Action
-                && ! (
-                    $token instanceof Model\Continuation
-                    || $token instanceof Model\Assertion
-                )
-            ) {
-                $fileFeedback->add($token->makeComment('The action should be followed by an assertion or continuation'));
-            }
-
-            if (
-                $previousToken instanceof Assertion
-                && ! (
-                    $token instanceof Model\Continuation
-                    || $token instanceof Model\Precondition
-                    || $token instanceof Model\Action
-                )
-            ) {
-                $fileFeedback->add($token->makeComment('The assertion should be followed by an action or continuation'));
-            }
-
-            if (
-                preg_match('/(type|click|select|follow)/', $token->getContext())
-                && ! (
-                    $token instanceof Model\Action
-                    || ($previousToken instanceof Model\Action && $token instanceof Model\Continuation)
-                    || $token instanceof Model\Precondition
-                    || ($previousToken instanceof Model\Precondition && $token instanceof Model\Continuation)
-                )
-            ) {
-                $fileFeedback->add($token->makeComment('The context suggests an precondition/action but the prefix does not'));
-            }
-
-            if (
-                preg_match('/(must|should)/', $token->getContext())
-                && ! (
-                    $token instanceof Model\Assertion
-                    || ($previousToken instanceof Model\Assertion && $token instanceof Model\Continuation)
-                )
-            ) {
-                $fileFeedback->add($token->makeComment('The context suggests an assertion but the prefix does not'));
-            }
+            $this->assertContextFlow($token, $fileFeedback);
+            $this->assertSemanticQuality($token, $fileFeedback);
 
             // Disregard this token as the previous token.
             if ($token instanceof Model\Continuation) {
                 continue;
             }
 
-            $previousToken = $token;
+            $this->previousToken = $token;
+        }
+    }
+
+    public function assertContextFlow(Model\Token $token, FileFeedback $fileFeedback)
+    {
+        if (
+            ! $this->previousToken
+            && ! (
+                $token instanceof Model\Precondition
+                || $token instanceof Model\Action
+                || $token instanceof Model\Assertion
+            )
+        ) {
+            $fileFeedback->add($token->makeComment('The continuation must not be at the beginning of the block'));
+        }
+
+        if (
+            $this->previousToken instanceof Model\Precondition
+            && ! (
+                $token instanceof Model\Continuation
+                || $token instanceof Model\Action
+                || $token instanceof Model\Assertion
+            )
+        ) {
+            $fileFeedback->add($token->makeComment('The precondition should be followed by an action, assertion or continuation'));
+        }
+
+        if (
+            $this->previousToken instanceof Model\Action
+            && ! (
+                $token instanceof Model\Continuation
+                || $token instanceof Model\Assertion
+            )
+        ) {
+            $fileFeedback->add($token->makeComment('The action should be followed by an assertion or continuation'));
+        }
+
+        if (
+            $this->previousToken instanceof Assertion
+            && ! (
+                $token instanceof Model\Continuation
+                || $token instanceof Model\Precondition
+                || $token instanceof Model\Action
+            )
+        ) {
+            $fileFeedback->add($token->makeComment('The assertion should be followed by an action or continuation'));
+        }
+    }
+
+    public function assertSemanticQuality(Model\Token $token, FileFeedback $fileFeedback)
+    {
+        if (
+            preg_match('/(type|click|select|follow)/', $token->getContext())
+            && ! (
+                $token instanceof Model\Action
+                || ($this->previousToken instanceof Model\Action && $token instanceof Model\Continuation)
+                || $token instanceof Model\Precondition
+                || ($this->previousToken instanceof Model\Precondition && $token instanceof Model\Continuation)
+            )
+        ) {
+            $fileFeedback->add($token->makeComment('The context suggests an precondition/action but the prefix does not'));
+        }
+
+        if (
+            preg_match('/(must|should)/', $token->getContext())
+            && ! (
+                $token instanceof Model\Assertion
+                || ($this->previousToken instanceof Model\Assertion && $token instanceof Model\Continuation)
+            )
+        ) {
+            $fileFeedback->add($token->makeComment('The context suggests an assertion but the prefix does not'));
         }
     }
 }
