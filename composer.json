@@ -1,0 +1,12 @@
+{
+    "name": "instaclick/gherkinics",
+    "description": "Code Sniffer and Semantic Analyzer for Gherkin",
+    "minimum-stability": "dev",
+    "license": "NONE",
+    "require": {
+        "php": ">=5.3.6"
+    },
+    "require-dev": {
+        "phpunit/PHPUnit": "3.7.1"
+    }
+}
