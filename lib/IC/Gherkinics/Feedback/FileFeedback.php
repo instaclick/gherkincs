@@ -33,6 +33,15 @@ final class FileFeedback
 
     public function all()
     {
-        return $this->messageList;
+        $messageList    = array();
+        $lineNumberList = array_keys($this->messageList);
+
+        sort($lineNumberList);
+
+        foreach ($lineNumberList as $lineNumber) {
+            $messageList[$lineNumber] = $this->messageList[$lineNumber];
+        }
+
+        return $messageList;
     }
 }

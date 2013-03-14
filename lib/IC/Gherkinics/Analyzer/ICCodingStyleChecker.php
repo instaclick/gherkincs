@@ -21,6 +21,10 @@ class ICCodingStyleChecker implements AnalyzerInterface
 
     public function analyze(array $tokenList, FileFeedback $fileFeedback)
     {
+        if (count($tokenList) > 350) {
+            $fileFeedback->add('Warning: Is this all about Star Wars? TL;DR. Please split it up');
+        }
+
         foreach ($tokenList as $token) {
             $fileFeedback->setToken($token);
             $this->validateIndentation($token, $fileFeedback);

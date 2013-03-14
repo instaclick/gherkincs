@@ -53,10 +53,6 @@ final class AnalyzerManager
         $fileFeedback = new FileFeedback();
         $tokenList    = $this->lexer->analyze($content);
 
-        if (count($tokenList) > 200) {
-            $fileFeedback->add('Warning: Is this all about Star Wars? TL;DR. Please split it up');
-        }
-
         foreach ($this->analyzerList as $analyzer) {
             $fileFeedback->setToken(null);
             $analyzer->analyze($tokenList, $fileFeedback);
