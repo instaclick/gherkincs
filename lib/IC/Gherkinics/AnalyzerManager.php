@@ -1,4 +1,7 @@
 <?php
+/**
+ * @copyright 2013 Instaclick Inc.
+ */
 namespace IC\Gherkinics;
 
 use IC\Gherkinics\Analyzer\AnalyzerInterface;

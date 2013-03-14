@@ -1,8 +1,16 @@
 <?php
+/**
+ * @copyright 2013 Instaclick Inc.
+ */
 namespace IC\Gherkinics;
 
 use IC\Gherkinics;
 
+/**
+ * Gherkin Lexer
+ *
+ * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
+ */
 final class Lexer
 {
     public function analyze($content)
@@ -33,6 +41,7 @@ final class Lexer
     private function makeModel($lineNo, $content)
     {
         if (preg_match('/^\s*$/', $content)) {
+            // Note: will be removed in the future.
             return new Model\Blank($lineNo, $content, null);
         }
 
@@ -76,6 +85,7 @@ final class Lexer
         }
 
         // Unknown statement type
+        // Note: Will be replaced with an exception in the future as any normal nodes (tokens) are merged into.
         return new Model\Node($lineNo, $content, $matches['context']);
     }
 
