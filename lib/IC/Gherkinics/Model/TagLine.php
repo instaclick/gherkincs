@@ -15,7 +15,7 @@ class TagLine extends Token
     {
         parent::__construct($id, $rawContent, $context);
 
-        foreach (preg_split('/\s+/', $rawContent) as $tag) {
+        foreach (preg_split('/\s+/', trim($rawContent)) as $tag) {
             $tag = trim($tag);
 
             if ( ! $tag) {

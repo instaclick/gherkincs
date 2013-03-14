@@ -8,7 +8,7 @@ use IC\Gherkinics\Analyzer\CodingStyleChecker;
 use IC\Gherkinics\Feedback\FileFeedback;
 
 /**
- * Test for Semantic Analyzer
+ * Test for Coding Style Checker
  *
  * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
  */

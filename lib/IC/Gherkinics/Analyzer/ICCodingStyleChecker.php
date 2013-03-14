@@ -27,20 +27,22 @@ class ICCodingStyleChecker implements AnalyzerInterface
 
         foreach ($tokenList as $token) {
             $fileFeedback->setToken($token);
-            $this->validateIndentation($token, $fileFeedback);
+            $this->validateTagLine($token, $fileFeedback);
         }
 
         $fileFeedback->setToken(null);
     }
 
-    private function validateIndentation(Model\Token $token, FileFeedback $fileFeedback)
+    private function validateTagLine(Model\Token $token, FileFeedback $fileFeedback)
     {
         if ( ! $token instanceof Model\TagLine) {
             return;
         }
 
         foreach ($token->getTagList() as $tag) {
-            if ( ! preg_match('/^\@/', $tag->getName())) {
+            $startWithAtSign = preg_match('/^\@/', $tag->getName());
+
+            if ( ! $startWithAtSign) {
                 $fileFeedback->add($token->makeComment('Given "' . $tag->getName() . '", please prefix this tag with "@"'));
             }
 
@@ -54,6 +56,14 @@ class ICCodingStyleChecker implements AnalyzerInterface
 
             if (preg_match('/-{2,}/', $tag->getName())) {
                 $fileFeedback->add($token->makeComment('Given "' . $tag->getName() . '", please use only one hyphen'));
+            }
+
+            if ($startWithAtSign && ! preg_match('/^[a-zA-Z0-9]/', substr($tag->getName(), 1))) {
+                $fileFeedback->add($token->makeComment('Given "' . $tag->getName() . '", the tag name must start with an alphanumeric character'));
+            }
+
+            if ( ! preg_match('/[a-zA-Z0-9]$/', $tag->getName())) {
+                $fileFeedback->add($token->makeComment('Given "' . $tag->getName() . '", the tag name must end with an alphanumeric character'));
             }
         }
     }
