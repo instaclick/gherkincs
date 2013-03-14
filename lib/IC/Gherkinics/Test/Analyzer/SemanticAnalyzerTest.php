@@ -21,9 +21,9 @@ class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getCompatibleNodeTypeListForLevel2Nodes
+     * @dataProvider getNodeForContextFlowTest
      */
-    public function testPositiveForContextFlow($previousType, $currentType)
+    public function testPositiveForContextFlow($expectedMessageCount, $previousType, $currentType)
     {
         if ($previousType) {
             $this->analyzer->setPreviousToken($this->createMock($previousType, 1, 'I am nobody.'));
@@ -33,23 +33,10 @@ class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
 
         $this->analyzer->assertContextFlow($token, $this->feedback);
 
-        $this->assertEquals(0, count($this->feedback->all()));
-    }
-
-    /**
-     * @dataProvider getIncompatibleNodeTypeListForLevel2Nodes
-     */
-    public function testNegativeForContextFlow($previousType, $currentType)
-    {
-        if ($previousType) {
-            $this->analyzer->setPreviousToken($this->createMock($previousType, 1, 'I am nobody.'));
-        }
-
-        $token = $this->createMock($currentType, 5, 'I am nobody.');
-
-        $this->analyzer->assertContextFlow($token, $this->feedback);
-
-        $this->assertEquals(1, count($this->feedback->all()));
+        $this->assertEquals(
+            $expectedMessageCount,
+            count($this->feedback->all())
+        );
     }
 
     /**
@@ -71,34 +58,28 @@ class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function getCompatibleNodeTypeListForLevel2Nodes()
+    public function getNodeForContextFlowTest()
     {
         return array(
-            array(null, 'Precondition'),
-            array(null, 'Action'),
-            array(null, 'Assertion'),
-            array('Precondition', 'Continuation'),
-            array('Precondition', 'Action'),
-            array('Precondition', 'Assertion'),
-            array('Action', 'Continuation'),
-            array('Action', 'Assertion'),
-            array('Assertion', 'Continuation'),
-            array('Assertion', 'Precondition'),
-            array('Assertion', 'Action'),
-        );
-    }
-
-    public function getIncompatibleNodeTypeListForLevel2Nodes()
-    {
-        return array(
-            array(null, 'Token'),
-            array('Precondition', 'Token'),
-            array('Precondition', 'Precondition'),
-            array('Action', 'Token'),
-            array('Action', 'Precondition'),
-            array('Action', 'Action'),
-            array('Assertion', 'Token'),
-            array('Assertion', 'Assertion'),
+            array(0, null, 'Precondition'),
+            array(0, null, 'Action'),
+            array(0, null, 'Assertion'),
+            array(0, 'Precondition', 'Continuation'),
+            array(0, 'Precondition', 'Action'),
+            array(0, 'Precondition', 'Assertion'),
+            array(0, 'Action', 'Continuation'),
+            array(0, 'Action', 'Assertion'),
+            array(0, 'Assertion', 'Continuation'),
+            array(0, 'Assertion', 'Precondition'),
+            array(0, 'Assertion', 'Action'),
+            array(1, null, 'Token'),
+            array(1, 'Precondition', 'Token'),
+            array(1, 'Precondition', 'Precondition'),
+            array(1, 'Action', 'Token'),
+            array(1, 'Action', 'Precondition'),
+            array(1, 'Action', 'Action'),
+            array(1, 'Assertion', 'Token'),
+            array(1, 'Assertion', 'Assertion'),
         );
     }
 

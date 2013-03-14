@@ -40,7 +40,6 @@ class CodingStyleChecker implements AnalyzerInterface
 
         $numberOfLeadingSpaces = $matches ? strlen($matches[0]) : 0;
         $indentationLevel      = $numberOfLeadingSpaces / $this->numberOfSpacesPerIndentation;
-        $expectedLeadingSpaces = ceil($indentationLevel) * $this->numberOfSpacesPerIndentation;
 
         // Tab characters
         if (preg_match('/\t/', $rawContent)) {
@@ -72,10 +71,7 @@ class CodingStyleChecker implements AnalyzerInterface
                 }
 
                 $fileFeedback->add($token->makeComment(
-                    $this->makeCommentOnImproperIndentation(
-                        $numberOfLeadingSpaces,
-                        $expectedLeadingSpaces
-                    )
+                    $this->makeCommentOnImproperIndentation(1, $numberOfLeadingSpaces)
                 ));
 
                 break;
@@ -90,10 +86,7 @@ class CodingStyleChecker implements AnalyzerInterface
                 }
 
                 $fileFeedback->add($token->makeComment(
-                    $this->makeCommentOnImproperIndentation(
-                        $numberOfLeadingSpaces,
-                        $expectedLeadingSpaces
-                    )
+                    $this->makeCommentOnImproperIndentation(2, $numberOfLeadingSpaces)
                 ));
 
                 break;
@@ -104,22 +97,20 @@ class CodingStyleChecker implements AnalyzerInterface
                 }
 
                 $fileFeedback->add($token->makeComment(
-                    $this->makeCommentOnImproperIndentation(
-                        $numberOfLeadingSpaces,
-                        $expectedLeadingSpaces
-                    )
+                    $this->makeCommentOnImproperIndentation(3, $numberOfLeadingSpaces)
                 ));
 
                 break;
         }
     }
 
-    private function makeCommentOnImproperIndentation($numberOfLeadingSpaces, $expectedNumberOfLeadingSpaces)
+    private function makeCommentOnImproperIndentation($indentationLevel, $numberOfLeadingSpaces)
     {
         return sprintf(
-            'Given %d spaces, it must have %d spaces before the beginning of the line',
+            'Given %d spaces, it must have %d spaces before the beginning of the line (level %d)',
             $numberOfLeadingSpaces,
-            $expectedNumberOfLeadingSpaces
+            $indentationLevel * $this->numberOfSpacesPerIndentation,
+            $indentationLevel
         );
     }
 }

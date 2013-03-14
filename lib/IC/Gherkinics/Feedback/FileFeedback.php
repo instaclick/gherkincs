@@ -28,6 +28,7 @@ final class FileFeedback
         $lineNumber = $this->token
             ? $this->token->getId()
             : 0;
+
         $this->messageList[$lineNumber][] = $message;
     }
 

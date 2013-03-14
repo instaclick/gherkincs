@@ -57,6 +57,12 @@ Feature: Some terse yet descriptive text of what is desired
         Then some testable outcome is achieved
         And I click something
         But something else we can check happens too
+
+    @panda
+    Scenario Outline: Some determinable business situation
+            |Search Engine|Keyword|
+            |Google       |Sushi  |
+            |Bing         |Pasta  |
 ENDING;
         $tokenTypeSequence = array(
             'Feature',
@@ -74,6 +80,12 @@ ENDING;
             'Assertion',
             'Continuation',
             'Continuation',
+            'Blank',
+            'TagLine',
+            'Scenario',
+            'TabularData',
+            'TabularData',
+            'TabularData',
         );
 
         return array(

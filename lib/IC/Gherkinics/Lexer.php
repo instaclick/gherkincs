@@ -94,13 +94,7 @@ final class Lexer
         $lineList    = array();
 
         foreach ($rawLineList as $line) {
-            $lineNumber++;
-
-            if (preg_match('/^\s*#/', $line)) {
-                continue;
-            }
-
-            $lineList[$lineNumber] = $line;
+            $lineList[++$lineNumber] = $line;
         }
 
         return $lineList;
