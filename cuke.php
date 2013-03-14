@@ -8,8 +8,12 @@
  * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
  */
 
-function __autoload($className) {
-    $basePath  = dirname(__FILE__);
+$basePath = dirname(__FILE__);
+
+function __autoload($className)
+{
+    global $basePath;
+
     $className = preg_replace('@\\\\@', '/', $className);
 
     require_once "$basePath/lib/$className.php";
@@ -23,28 +27,52 @@ use IC\Gherkinics\Util\Output;
 
 function main($args)
 {
+    global $basePath;
+
     $output   = new Output();
     $manager  = new AnalyzerManager();
     $cuke     = new Core();
 
-    if (count($args) === 0) {
-        $output->writeln('USAGE: cuke /path/pattern/to/scan');
+    if (count($args) < 2) {
+        $output->writeln('USAGE: cuke /path/to/config_file /path/pattern/to/scan');
 
         exit(1);
     }
+
+    $configPath = $args[0];
+    $targetPath = $args[1];
+
     // Set up the analyzer manager.
     $manager->setLexer(new Lexer());
-    $manager->registerAnalyzer(new Analyzer\SemanticAnalyzer());
-    $manager->registerAnalyzer(new Analyzer\CodingStyleChecker());
-    $manager->registerAnalyzer(new Analyzer\ICCodingStyleChecker());
+
+    $config = simplexml_load_file($configPath);
+
+    if ( ! isset($config->analyzers)) {
+        $output->writeln('Notice: the configuration file is invalid.');
+
+        exit(1);
+    }
+
+    if ( ! isset($config->analyzers->analyzer)) {
+        $output->writeln('Terminated due to that no analyzers are found.');
+
+        exit(1);
+    }
+
+    foreach ($config->analyzers->analyzer as $analyzer) {
+        $analyzerClass = '\\'.$analyzer['class'];
+        $output->write('       Registering analyzer: ' . $analyzerClass);
+        $manager->registerAnalyzer(new $analyzerClass());
+        $output->writeln("\r[DONE]");
+    }
 
     // Set up the core object.
-    $cuke->setBasePath($args[0]);
+    $cuke->setBasePath($targetPath);
     $cuke->setAnalyzerManager($manager);
 
     $output->writeln(PHP_EOL . 'Analyzing feature files...');
 
-    $cuke->scan($args[0] . '/*');
+    $cuke->scan($targetPath . '/*');
 
     $output->writeln('');
     $cuke->showFeedback();

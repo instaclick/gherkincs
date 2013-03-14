@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<cuke>
+    <analyzers>
+        <analyzer class="IC\Gherkinics\Analyzer\SemanticAnalyzer"/>
+        <analyzer class="IC\Gherkinics\Analyzer\CodingStyleChecker"/>
+        <analyzer class="IC\Gherkinics\Analyzer\ICCodingStyleChecker"/>
+    </analyzers>
+</cuke>

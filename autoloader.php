@@ -1,5 +1,6 @@
 <?php
-function __autoload($className) {
+function __autoload($className)
+{
     $basePath  = dirname(__FILE__);
     $classPath = preg_replace('@\\\\@', '/', $className);
 
