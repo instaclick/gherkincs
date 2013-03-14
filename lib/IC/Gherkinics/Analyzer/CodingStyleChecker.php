@@ -91,13 +91,23 @@ class CodingStyleChecker implements AnalyzerInterface
 
                 break;
 
-            case $fileFeedback instanceof Model\TabularData:
+            case $token instanceof Model\TabularData:
                 if ($indentationLevel === 3) {
                     break;
                 }
 
                 $fileFeedback->add($token->makeComment(
                     $this->makeCommentOnImproperIndentation(3, $numberOfLeadingSpaces)
+                ));
+
+                break;
+            case $token instanceof Model\TagLine:
+                if ($indentationLevel === 0 || $indentationLevel === 1) {
+                    break;
+                }
+
+                $fileFeedback->add($token->makeComment(
+                    'There exists upto ' . $this->numberOfSpacesPerIndentation . ' spaces for a tag line'
                 ));
 
                 break;
