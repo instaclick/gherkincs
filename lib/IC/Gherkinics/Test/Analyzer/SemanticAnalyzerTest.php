@@ -7,6 +7,11 @@ namespace IC\Gherkinics\Test\Analyzer;
 use IC\Gherkinics\Analyzer\SemanticAnalyzer;
 use IC\Gherkinics\Feedback\FileFeedback;
 
+/**
+ * Test for Semantic Analyzer
+ *
+ * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
+ */
 class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()

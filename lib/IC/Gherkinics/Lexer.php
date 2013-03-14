@@ -66,7 +66,7 @@ final class Lexer
         preg_match('/^\s*(?P<prefix>Feature:|Scenario[^:]*:|Given|Then|And|But|When)(?<context>.*)$/i', $content, $matches);
 
         if ( ! $matches) {
-            return null;
+            return new Model\Node($lineNo, $content, null);
         }
 
         switch (true) {
@@ -84,9 +84,7 @@ final class Lexer
                 return new Model\Action($lineNo, $content, $matches['context']);
         }
 
-        // Unknown statement type
-        // Note: Will be replaced with an exception in the future as any normal nodes (tokens) are merged into.
-        return new Model\Node($lineNo, $content, $matches['context']);
+        throw new \RuntimeException('Unable to determine the type of token.');
     }
 
     private function cleanUp($content)
