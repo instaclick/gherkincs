@@ -24,23 +24,23 @@ final class FileFeedback
     private $messageList = array();
 
     /**
+     * Constructor
+     *
+     * @param \IC\Gherkinics\Model\Token $token
+     */
+    public function __construct(Token $token = null)
+    {
+        $this->token = $token;
+    }
+
+    /**
      * Retrieve token
      *
-     * @return IC\Gherkinics\Model\Token
+     * @return \IC\Gherkinics\Model\Token
      */
     public function getToken()
     {
         return $this->token;
-    }
-    
-    /**
-     * Define token
-     *
-     * @param IC\Gherkinics\Model\Token $token
-     */
-    public function setToken(Token $token = null)
-    {
-        $this->token = $token;
     }
     
     public function add($message)

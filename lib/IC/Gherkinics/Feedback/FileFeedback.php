@@ -26,7 +26,7 @@ final class FileFeedback
     /**
      * Define token
      *
-     * @param IC\Gherkinics\Model\Token $token
+     * @param \IC\Gherkinics\Model\Token $token
      */
     public function setToken(Token $token = null)
     {
@@ -38,6 +38,10 @@ final class FileFeedback
         $lineNumber = $this->token
             ? $this->token->getId()
             : 0;
+
+        if ( ! isset($this->messageList[$lineNumber])) {
+            $this->messageList[$lineNumber] = new TokenFeedback()
+        }
 
         $this->messageList[$lineNumber][] = $message;
     }
