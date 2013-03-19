@@ -24,6 +24,16 @@ final class FileFeedback
     private $messageList = array();
 
     /**
+     * Retrieve token
+     *
+     * @return IC\Gherkinics\Model\Token
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+    
+    /**
      * Define token
      *
      * @param IC\Gherkinics\Model\Token $token
@@ -32,27 +42,14 @@ final class FileFeedback
     {
         $this->token = $token;
     }
-
+    
     public function add($message)
     {
-        $lineNumber = $this->token
-            ? $this->token->getId()
-            : 0;
-
-        $this->messageList[$lineNumber][] = $message;
+        $this->messageList[] = $message;
     }
-
+    
     public function all()
     {
-        $messageList    = array();
-        $lineNumberList = array_keys($this->messageList);
-
-        sort($lineNumberList);
-
-        foreach ($lineNumberList as $lineNumber) {
-            $messageList[$lineNumber] = $this->messageList[$lineNumber];
-        }
-
-        return $messageList;
+        return $this->messageList;
     }
 }

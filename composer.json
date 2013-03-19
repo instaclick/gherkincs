@@ -4,7 +4,8 @@
     "minimum-stability": "dev",
     "license": "NONE",
     "require": {
-        "php": ">=5.3.6"
+        "php": ">=5.3.6",
+        "twig/twig": "1.*"
     },
     "require-dev": {
         "phpunit/PHPUnit": ">=3.7.x-dev"

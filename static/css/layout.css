@@ -1,0 +1,8 @@
+body {
+    background-color: #eee;
+    padding: 20px;
+}
+
+body > article > .row > .span12 {
+    margin-left: 0;
+}

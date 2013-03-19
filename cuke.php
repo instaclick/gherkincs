@@ -8,6 +8,8 @@
  * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
  */
 
+require_once 'vendor/autoload.php';
+
 $basePath = dirname(__FILE__);
 
 function __autoload($className)
@@ -19,28 +21,42 @@ function __autoload($className)
     require_once "$basePath/lib/$className.php";
 }
 
+spl_autoload_register('__autoload');
+
 use IC\Gherkinics\AnalyzerManager;
 use IC\Gherkinics\Analyzer;
 use IC\Gherkinics\Core;
 use IC\Gherkinics\Lexer;
 use IC\Gherkinics\Util\Output;
+use IC\Gherkinics\Printer;
 
-function main($args)
+function main($argumentList)
 {
     global $basePath;
 
-    $output   = new Output();
-    $manager  = new AnalyzerManager();
-    $cuke     = new Core();
+    $output         = new Output();
+    $manager        = new AnalyzerManager();
+    $cuke           = new Core();
+    $argumentLength = count($argumentList);
 
-    if (count($args) < 2) {
-        $output->writeln('USAGE: cuke /path/to/config_file /path/pattern/to/scan');
+    if ($argumentLength < 2) {
+        $output->writeln('USAGE: cuke [--html /path/to/directory/for/report] /path/to/config_file /path/pattern/to/scan');
 
         exit(1);
     }
 
-    $configPath = $args[0];
-    $targetPath = $args[1];
+    $configPath = $argumentList[$argumentLength - 2];
+    $targetPath = $argumentList[$argumentLength - 1];
+    $optionMap  = array(
+        'html' => array(
+            'index' => in_array('--html', $argumentList) ? array_search('--html', $argumentList) : null,
+            'value' => null,
+        ),
+    );
+
+    if ($optionMap['html']['index'] >= 0) {
+        $optionMap['html']['value'] = $argumentList[$optionMap['html']['index'] + 1];
+    }
 
     // Set up the analyzer manager.
     $manager->setLexer(new Lexer());
@@ -72,10 +88,27 @@ function main($args)
 
     $output->writeln(PHP_EOL . 'Analyzing feature files...');
 
-    $cuke->scan($targetPath . '/*');
+    $pathToFeedbackMap = $cuke->scan($targetPath . '/*');
 
     $output->writeln('');
-    $cuke->showFeedback();
+
+    switch (true) {
+        case isset($optionMap['html']['value']):
+            $printer = new Printer\HtmlPrinter(
+                $basePath . '/view',   # template pool
+                $basePath . '/static', # static pool
+                $basePath . '/' . $optionMap['html']['value'],
+                $targetPath
+            );
+
+            break;
+        default:
+            $printer = new Printer\TerminalPrinter($output, $basePath);
+
+            break;
+    }
+
+    $printer->doPrint($pathToFeedbackMap);
 
     $output->writeln('Analysis complete.');
     $output->writeln(PHP_EOL . 'Please note that this tool only detects classic errors.');
