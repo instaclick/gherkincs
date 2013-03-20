@@ -22,7 +22,7 @@
         <ul class="file-list">
             {% for path, data in relativePathToDataMap %}
                 <li>
-                    <a href="{{ data.hash }}.html">{{ path }}</a>
+                    <a href="{{ data.hash }}.html">{{ path }} <span class="badge badge-important">{{ data.violatedLineCount }}</span></a>
                     {% set warningRatio = data.violatedLineCount / maximumViolatedLineCount * 100 %}
                     <div class="progress">
                         <div class="bar {% if data.violatedLineCount > 0 %}bar-{% if warningRatio > 25 %}danger{% else %}warning{% endif %}{% endif %}" style="width: {{ warningRatio }}%;"></div>

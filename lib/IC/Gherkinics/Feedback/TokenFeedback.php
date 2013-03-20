@@ -7,11 +7,11 @@ namespace IC\Gherkinics\Feedback;
 use IC\Gherkinics\Model\Token;
 
 /**
- * File Feedback Backet
+ * Token Feedback Backet
  *
  * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
  */
-final class FileFeedback
+final class TokenFeedback
 {
     /**
      * @var \IC\Gherkincs\Model\Token the current token

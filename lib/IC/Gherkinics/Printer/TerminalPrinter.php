@@ -50,7 +50,7 @@ class TerminalPrinter
             $this->output->writeln(substr($path, $pathOffset));
 
             foreach ($lineToFeedbackListMap->all() as $lineNo => $feedbackList) {
-                if ($previousFeedback == $feedbackList) {
+                if ($previousFeedback == $feedbackList->all()) {
                     $lineNumberListWithSameError[] = $lineNo;
 
                     continue;
@@ -63,9 +63,9 @@ class TerminalPrinter
                 }
 
                 $this->output->writeln('  line ' . $lineNo . ':');
-                $this->output->writeln('    - ' . implode('.' . PHP_EOL . '    - ', $feedbackList) . '.');
+                $this->output->writeln('    - ' . implode('.' . PHP_EOL . '    - ', $feedbackList->all()) . '.');
 
-                $previousFeedback            = $feedbackList;
+                $previousFeedback            = $feedbackList->all();
                 $lineNumberListWithSameError = array();
             }
 

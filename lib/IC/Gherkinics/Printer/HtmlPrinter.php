@@ -82,8 +82,10 @@ class HtmlPrinter
                 $maximumViolatedLineCount = $violatedLineCount;
             }
 
-            $relativePathToDataMap[$relativePath]['hash']              = sha1($relativePath);
-            $relativePathToDataMap[$relativePath]['violatedLineCount'] = $violatedLineCount;
+            $relativePathToDataMap[$relativePath] = array(
+                'hash'              => sha1($relativePath),
+                'violatedLineCount' => $violatedLineCount,
+            );
         }
 
         $filePath = $this->outputPath . '/index.html';

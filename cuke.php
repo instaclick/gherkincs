@@ -54,7 +54,7 @@ function main($argumentList)
         ),
     );
 
-    if ($optionMap['html']['index'] >= 0) {
+    if ($optionMap['html']['index'] !== null && $optionMap['html']['index'] >= 0) {
         $optionMap['html']['value'] = $argumentList[$optionMap['html']['index'] + 1];
     }
 
@@ -93,7 +93,7 @@ function main($argumentList)
     $output->writeln('');
 
     switch (true) {
-        case isset($optionMap['html']['value']):
+        case $optionMap['html']['index'] !== null:
             $printer = new Printer\HtmlPrinter(
                 $basePath . '/view',   # template pool
                 $basePath . '/static', # static pool

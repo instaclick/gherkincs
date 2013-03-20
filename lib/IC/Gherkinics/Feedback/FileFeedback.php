@@ -22,6 +22,11 @@ final class FileFeedback
      * @var array
      */
     private $messageList = array();
+    
+    /**
+     * @var boolean
+     */
+    private $sorted = false;
 
     /**
      * Define token
@@ -40,14 +45,18 @@ final class FileFeedback
             : 0;
 
         if ( ! isset($this->messageList[$lineNumber])) {
-            $this->messageList[$lineNumber] = new TokenFeedback()
+            $this->messageList[$lineNumber] = new TokenFeedback($this->token ?: null);
         }
 
-        $this->messageList[$lineNumber][] = $message;
+        $this->messageList[$lineNumber]->add($message);
     }
 
     public function all()
     {
+        if ($this->sorted) {
+            return $this->messageList;
+        }
+        
         $messageList    = array();
         $lineNumberList = array_keys($this->messageList);
 
@@ -57,6 +66,6 @@ final class FileFeedback
             $messageList[$lineNumber] = $this->messageList[$lineNumber];
         }
 
-        return $messageList;
+        return $this->messageList = $messageList;
     }
 }
