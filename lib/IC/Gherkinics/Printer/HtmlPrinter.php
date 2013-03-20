@@ -81,8 +81,17 @@ class HtmlPrinter
             if ($maximumViolatedLineCount < $violatedLineCount) {
                 $maximumViolatedLineCount = $violatedLineCount;
             }
+            
+            $segmentList = array();
+            
+            preg_match_all('/(?P<directory>.+)\/(?P<name>[^\.]+)\.(?P<extension>.+)$/', $relativePath, $segmentList);
+            var_dump($segmentList);die;
 
             $relativePathToDataMap[$relativePath] = array(
+                'path'              => $relativePath,
+                'directory'         => $segmentList['directory'],
+                'name'              => $segmentList['name'],
+                'extension'         => $segmentList['extension'],
                 'hash'              => sha1($relativePath),
                 'violatedLineCount' => $violatedLineCount,
             );

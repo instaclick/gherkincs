@@ -65,6 +65,8 @@ final class FileFeedback
         foreach ($lineNumberList as $lineNumber) {
             $messageList[$lineNumber] = $this->messageList[$lineNumber];
         }
+        
+        $this->sorted = true;
 
         return $this->messageList = $messageList;
     }

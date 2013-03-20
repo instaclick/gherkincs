@@ -37,7 +37,7 @@ class ICCodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $messageList = $messageMap[$token->getId()];
+        $messageList = $messageMap[$token->getId()]->all();
 
         $this->assertEquals(1, count($messageMap));
         $this->assertEquals($expectedFeedbackCount, count($messageList));
