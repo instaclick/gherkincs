@@ -1,11 +1,8 @@
 <!doctype html>
 <html>
 <head>
+    {% include '_header.html.twig' %}
     <title>Summary - Gherkinics Report</title>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="static/vendor/bootstrap/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="static/vendor/bootstrap/css/bootstrap-responsive.css"/>
     <link rel="stylesheet" href="static/css/summary.css"/>
 </head>
 <body>
@@ -21,13 +18,15 @@
         </p>
         <ul class="file-list">
             {% for path, data in relativePathToDataMap %}
-                <li>
-                    <a href="{{ data.hash }}.html">{{ path }} <span class="badge badge-important">{{ data.violatedLineCount }}</span></a>
-                    {% set warningRatio = data.violatedLineCount / maximumViolatedLineCount * 100 %}
-                    <div class="progress">
-                        <div class="bar {% if data.violatedLineCount > 0 %}bar-{% if warningRatio > 25 %}danger{% else %}warning{% endif %}{% endif %}" style="width: {{ warningRatio }}%;"></div>
-                    </div>
-                </li>
+                {% if data.violatedLineCount > 0 %}
+                    <li>
+                        <div class="score">{{ data.violatedLineCount }}</div>
+                        <a href="{{ data.hash }}.html" title="{{ path }}">
+                            <span class="directory">{{ data.directory }}</span>
+                            <span class="name">{{ data.name }}</span>
+                        </a>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     {% endif %}

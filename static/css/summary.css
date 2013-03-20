@@ -9,19 +9,45 @@
 .file-list li {
     position: relative;
     border: 1px solid #ddd;
-    padding: 20px;
+    margin-right: 10px;
     margin-bottom: 10px;
     background-color: #fff;
     box-shadow: #ddd 0 0 10px;
+    width: 268px;
+    display: inline-block;
 }
 
-.file-list li .progress {
-    border-radius: 0;
-    margin-bottom: 0;
+.file-list li a {
+    display: block;
+    padding: 10px 20px 20px 20px;
+    text-decoration: none;
+}
+
+.file-list li a .directory {
+    display: block;
+    color: #ccc;
+    font-size: 12px;
+}
+
+.file-list li a .name {
+    display: block;
+    font-size: 18px;
+    color: #000;
+}
+
+.file-list li .score {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-    background: #ddd;
+    top: 0;
+    right: 100%;
+    padding: 5px;
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    background-color: #FF8800;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    margin-top: -11px;
+    margin-right: -11px;
+    min-width: 21px;
 }
