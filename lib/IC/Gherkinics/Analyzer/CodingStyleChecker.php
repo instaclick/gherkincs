@@ -24,11 +24,9 @@ class CodingStyleChecker implements AnalyzerInterface
     public function analyze(array $tokenList, FileFeedback $fileFeedback)
     {
         foreach ($tokenList as $token) {
-            $fileFeedback->setToken($token);
+            $fileFeedback->setCurrentToken($token);
             $this->validateIndentation($token, $fileFeedback);
         }
-
-        $fileFeedback->setToken(null);
     }
 
     private function validateIndentation(Model\Token $token, FileFeedback $fileFeedback)

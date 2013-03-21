@@ -50,11 +50,11 @@ final class AnalyzerManager
      */
     public function analyze($content)
     {
-        $fileFeedback = new FileFeedback();
         $tokenList    = $this->lexer->analyze($content);
+        $fileFeedback = new FileFeedback($tokenList);
 
         foreach ($this->analyzerList as $analyzer) {
-            $fileFeedback->setToken(null);
+            $fileFeedback->setCurrentToken(null);
             $analyzer->analyze($tokenList, $fileFeedback);
         }
 

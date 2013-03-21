@@ -29,7 +29,7 @@ class SemanticAnalyzer implements AnalyzerInterface
         $this->previousToken = null;
 
         foreach ($tokenList as $token) {
-            $fileFeedback->setToken($token);
+            $fileFeedback->setCurrentToken($token);
 
             if (
                 $token instanceof Model\Node

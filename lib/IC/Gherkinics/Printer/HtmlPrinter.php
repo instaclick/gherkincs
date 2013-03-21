@@ -54,8 +54,34 @@ class HtmlPrinter
      */
     public function doPrint(array $pathToFeedbackMap)
     {
+        $pathToDataMap = array();
+        $prefixLength  = strlen($this->scannedPath) + 1;
+
+        foreach ($pathToFeedbackMap as $filePath => $lineToViolationsMap) {
+            $relativePath      = substr($filePath, $prefixLength);
+            $violatedLineCount = count($lineToViolationsMap->all());
+
+            $segmentList = array();
+
+            preg_match(
+                '/(?P<directory>.+)\/(?P<name>[^\.]+)\.(?P<extension>.+)$/',
+                $relativePath,
+                $segmentList
+            );
+
+            $pathToDataMap[$filePath] = array(
+                'path'              => $relativePath,
+                'directory'         => $segmentList['directory'],
+                'name'              => $segmentList['name'],
+                'extension'         => $segmentList['extension'],
+                'hash'              => sha1($relativePath),
+                'violatedLineCount' => $violatedLineCount,
+            );
+        }
+
+        $this->printSummary($pathToFeedbackMap, $pathToDataMap);
+        $this->printMultipleReports($pathToFeedbackMap, $pathToDataMap);
         $this->copyStaticResource();
-        $this->printSummary($pathToFeedbackMap);
     }
 
     private function copyStaticResource()
@@ -68,51 +94,52 @@ class HtmlPrinter
         return $this->environment->render($templatePath, $contextVariableMap);
     }
 
-    private function printSummary(array $pathToFeedbackMap)
+    private function export($templatePath, $outputName, $contextVariableMap = array())
     {
-        $relativePathToDataMap    = array();
-        $prefixLength             = strlen($this->scannedPath) + 1;
-        $maximumViolatedLineCount = 0;
-
-        foreach ($pathToFeedbackMap as $filePath => $lineToViolationsMap) {
-            $relativePath      = substr($filePath, $prefixLength);
-            $violatedLineCount = count($lineToViolationsMap->all());
-
-            if ($maximumViolatedLineCount < $violatedLineCount) {
-                $maximumViolatedLineCount = $violatedLineCount;
-            }
-
-            $segmentList = array();
-
-            preg_match(
-                '/(?P<directory>.+)\/(?P<name>[^\.]+)\.(?P<extension>.+)$/',
-                $relativePath,
-                $segmentList
-            );
-
-            $relativePathToDataMap[$relativePath] = array(
-                'path'              => $relativePath,
-                'directory'         => $segmentList['directory'],
-                'name'              => $segmentList['name'],
-                'extension'         => $segmentList['extension'],
-                'hash'              => sha1($relativePath),
-                'violatedLineCount' => $violatedLineCount,
-            );
-        }
-
-        $filePath = $this->outputPath . '/index.html';
-        $output   = $this->render(
-            'index.html.twig',
-            array(
-                'relativePathToDataMap'   => $relativePathToDataMap,
-                'maximumViolatedLineCount' => $maximumViolatedLineCount,
-            )
-        );
+        $filePath = $this->outputPath . '/' . $outputName;
+        $output   = $this->render($templatePath, $contextVariableMap);
 
         if (file_exists($filePath)) {
             unlink($filePath);
         }
 
         file_put_contents($filePath, $output);
+    }
+
+    private function printSummary(array $pathToFeedbackMap, array $pathToDataMap)
+    {
+        $relativePathToDataMap    = array();
+        $maximumViolatedLineCount = 0;
+
+        foreach ($pathToDataMap as $filePath => $dataMap) {
+            if ($maximumViolatedLineCount < $dataMap['violatedLineCount']) {
+                $maximumViolatedLineCount = $dataMap['violatedLineCount'];
+            }
+
+            $relativePathToDataMap[$dataMap['path']] = $dataMap;
+        }
+
+        $this->export(
+            'index.html.twig',
+            'index.html',
+            array(
+                'relativePathToDataMap'    => $relativePathToDataMap,
+                'maximumViolatedLineCount' => $maximumViolatedLineCount,
+            )
+        );
+    }
+
+    private function printMultipleReports(array $pathToFeedbackMap, array $pathToDataMap)
+    {
+        foreach ($pathToDataMap as $filePath => $dataMap) {
+            $this->export(
+                'file_feedback.html.twig',
+                $dataMap['hash'] . '.html',
+                array(
+                    'feedbackMap' => $pathToFeedbackMap[$filePath],
+                    'dataMap'     => $dataMap,
+                )
+            );
+        }
     }
 }

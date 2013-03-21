@@ -26,11 +26,9 @@ class ICCodingStyleChecker implements AnalyzerInterface
         }
 
         foreach ($tokenList as $token) {
-            $fileFeedback->setToken($token);
+            $fileFeedback->setCurrentToken($token);
             $this->validateTagLine($token, $fileFeedback);
         }
-
-        $fileFeedback->setToken(null);
     }
 
     private function validateTagLine(Model\Token $token, FileFeedback $fileFeedback)

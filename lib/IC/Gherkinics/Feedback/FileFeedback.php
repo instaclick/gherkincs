@@ -16,7 +16,12 @@ final class FileFeedback
     /**
      * @var \IC\Gherkincs\Model\Token the current token
      */
-    private $token;
+    private $currentToken;
+
+    /**
+     * @var array
+     */
+    private $tokenList;
 
     /**
      * @var array
@@ -28,24 +33,34 @@ final class FileFeedback
      */
     private $sorted = false;
 
+    public function __construct(array $tokenList=array())
+    {
+        $this->tokenList = $tokenList;
+    }
+    
+    public function getTokenList()
+    {
+        return $this->tokenList;
+    }
+
     /**
-     * Define token
+     * Define the current token
      *
      * @param \IC\Gherkinics\Model\Token $token
      */
-    public function setToken(Token $token = null)
+    public function setCurrentToken(Token $token = null)
     {
-        $this->token = $token;
+        $this->currentToken = $token;
     }
 
     public function add($message)
     {
-        $lineNumber = $this->token
-            ? $this->token->getId()
+        $lineNumber = $this->currentToken
+            ? $this->currentToken->getId()
             : 0;
 
         if ( ! isset($this->messageList[$lineNumber])) {
-            $this->messageList[$lineNumber] = new TokenFeedback($this->token ?: null);
+            $this->messageList[$lineNumber] = new TokenFeedback($this->currentToken ?: null);
         }
 
         $this->messageList[$lineNumber]->add($message);
@@ -69,5 +84,12 @@ final class FileFeedback
         $this->sorted = true;
 
         return $this->messageList = $messageList;
+    }
+    
+    public function get($id)
+    {
+        return isset($this->messageList[$id])
+            ? $this->messageList[$id]
+            : array();
     }
 }
