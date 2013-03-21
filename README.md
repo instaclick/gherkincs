@@ -2,9 +2,20 @@
 
 By Juti Noppornpitak
 
-## How to Use
+## Dependencies
 
-To use this tool, please run `php cuke.php <configuration_file_path> <directory_path_to_scan>`.
+* twig (dev-master, required for HTML report)
+* PHPUnit (dev-master, development only)
+
+## Installation
+
+To use normally, run `composer.phar install`.
+
+If you plan on developing or extending functionality, run `composer.phar install --dev`.
+
+## Usage
+
+To use this tool, please run `php cuke.php [--html <directory_to_put_reports>] <configuration_file_path> <directory_path_to_scan>`.
 
 ## Available Analyzers
 

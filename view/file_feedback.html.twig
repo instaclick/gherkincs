@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+    {% include '_header.html.twig' %}
+    <title>{{ dataMap.directory }}/{{ dataMap.name }} - Gherkinics Report</title>
+    <link rel="stylesheet" href="static/css/file_feedback.css"/>
+</head>
+<body>
+<article class="container-fluid">
+    <h1><small>{{ dataMap.directory }}</small>{{ dataMap.name }}</h1>
+    <div class="code">
+        {% for token in feedbackMap.tokenList %}
+            {% set tokenFeedback = feedbackMap.get(token.id) %}
+
+            <div class="line-no">{{ token.id }}</div>
+            <div class="token {% if not tokenFeedback %}ignored{% endif %}">{{ token.rawContent }}</div>
+
+            {% if tokenFeedback %}
+                <article class="notes">
+                    <div class="row">
+                        <div class="span2">
+                            <h2>{{ tokenFeedback.count }} <small>violation(s)</small></h2>
+                        </div>
+                        <div class="span9">
+                            <ul>{% for violation in tokenFeedback.all %}
+                                <li>{{ violation }}</li>
+                            {% endfor %}</ul>
+                        </div>
+                    </div>
+                </article>
+            {% endif %}
+        {% endfor %}
+    </div>
+</article>
+<script>
+window.onload = function () {
+    'use strict';
+    var tokenList = document.getElementsByClassName('token'), i, l, line;
+
+    for (i = 0, l = tokenList.length; i < l; i++) {
+        line = String(tokenList[i].innerHTML);
+
+        line = line.replace(new RegExp(' ', 'g'), '<span class="space">&nbsp;</span>');
+        line = line.replace(new RegExp('\t', 'g'), '<span class="tab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+
+        tokenList[i].innerHTML = line;
+    }
+};
+</script>
+</body>
+</html>

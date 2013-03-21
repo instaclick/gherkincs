@@ -52,4 +52,9 @@ final class TokenFeedback
     {
         return $this->messageList;
     }
+    
+    public function count()
+    {
+        return count($this->messageList);
+    }
 }

@@ -109,7 +109,7 @@ class SemanticAnalyzer implements AnalyzerInterface
     public function assertSemanticQuality(Model\Token $token, FileFeedback $fileFeedback)
     {
         if (
-            preg_match('/(fill|click|select|follow)/', $token->getContext())
+            preg_match('/ (fill|click|select|follow) /', $token->getContext())
             && ! (
                 $token instanceof Model\Action
                 || ($this->previousToken instanceof Model\Action && $token instanceof Model\Continuation)
@@ -121,7 +121,7 @@ class SemanticAnalyzer implements AnalyzerInterface
         }
 
         if (
-            preg_match('/(must|should)/', $token->getContext())
+            preg_match('/ (must|should) /', $token->getContext())
             && ! $token instanceof Model\Assertion
             && ! ($this->previousToken instanceof Model\Assertion && $token instanceof Model\Continuation)
         ) {

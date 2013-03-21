@@ -1,0 +1,47 @@
+@import url('layout.css');
+
+h1 small {
+    display: block;
+}
+
+.code {
+    overflow: hidden;
+    padding: 20px;
+    background: #fff;
+    box-shadow: #ddd 0 0 20px;
+}
+
+.line-no {
+    position: absolute;
+}
+
+.token {
+    font-family: 'Monaco', monospace;
+    white-space: nowrap;
+    color: #FF4444;
+    padding-left: 40px;
+    min-height: 30px;
+}
+
+.space {
+    border-bottom: 2px solid #eee;
+}
+
+.tab {
+    border-bottom: 2px solid #FF4444;
+}
+
+.token.ignored {
+    color: #999;
+    opacity: 0.5;
+}
+
+.notes {
+    border: 1px dashed #ddd;
+    padding: 20px;
+    margin: 5px 0;
+}
+
+.notes h2 {
+    margin: 0;
+}
