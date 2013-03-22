@@ -13,6 +13,7 @@
         <a href="#top" title="Go to the top" class="btn"><i class="icon-arrow-up"></i></a>
     </header>
     <h1><small>{{ dataMap.directory }}</small>{{ dataMap.name }}</h1>
+    {% spaceless %}
     <div class="code">
         {% for token in feedbackMap.tokenList %}
             {% set tokenFeedback = feedbackMap.get(token.id) %}
@@ -41,6 +42,7 @@
             </div>
         {% endfor %}
     </div>
+    {% endspaceless %}
 </article>
 <script>
 window.onload = function () {
@@ -59,15 +61,19 @@ window.onload = function () {
         line = String(token.innerHTML);
 
         line = line.replace(
+            new RegExp('(\\\s+)$'),
+            '__tsp_begin__$1__tsp_end__'
+        );
+        line = line.replace(
             new RegExp(' ', 'g'),
             whitespaceEntity
         );
         line = line.replace(
-            new RegExp('"([^\"]*)"'),
+            new RegExp('"([^\"]*)"', 'g'),
             '<span class="syntax quote">"$1"</span>'
         );
         line = line.replace(
-            new RegExp('\'([^\']*)\''),
+            new RegExp('\'([^\']*)\'', 'g'),
             '<span class="syntax quote">\'$1\'</span>'
         );
         line = line.replace(
@@ -89,6 +95,10 @@ window.onload = function () {
         line = line.replace(
             new RegExp('(And|Given|Then|When)'),
             '<span class="syntax step">$1</span>'
+        );
+        line = line.replace(
+            new RegExp('__tsp_begin__(.+)__tsp_end__$'),
+            '<span class="syntax trailing-spaces">$1</span>'
         );
 
         token.innerHTML = line;

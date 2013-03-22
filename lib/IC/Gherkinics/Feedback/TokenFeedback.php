@@ -42,17 +42,32 @@ final class TokenFeedback
     {
         return $this->token;
     }
-    
+
+    /**
+     * Add the message
+     *
+     * @param string $message
+     */
     public function add($message)
     {
         $this->messageList[] = $message;
     }
-    
+
+    /**
+     * Retrieve all messages
+     *
+     * @return array
+     */
     public function all()
     {
         return $this->messageList;
     }
-    
+
+    /**
+     * Retrieve the number of messages
+     *
+     * @return integer
+     */
     public function count()
     {
         return count($this->messageList);

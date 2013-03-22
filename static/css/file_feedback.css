@@ -29,6 +29,8 @@ h1 small {
     transition: all ease 250ms;
     -moz-transition: all ease 250ms;
     -webkit-transition: all ease 250ms;
+    border-bottom: 1px solid #eee;
+    line-height: 30px;
 }
 
 .line-no {
@@ -40,7 +42,6 @@ h1 small {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #FF4444;
     padding-left: 40px;
     min-height: 30px;
 }
@@ -69,13 +70,17 @@ h1 small {
     color: #FF8800;
 }
 
+.token .syntax.trailing-spaces {
+    background-color: #FF4444;
+    border-radius: 5px;
+}
+
 .token .tab {
     border-bottom: 2px solid #FF4444;
 }
 
 .token.ignored {
     color: #999;
-    opacity: 0.5;
 }
 
 .notes {
@@ -87,4 +92,8 @@ h1 small {
 
 .notes h2 {
     margin: 0;
+}
+
+.code > .line:first-child {
+    border-top: 1px solid #eee;
 }

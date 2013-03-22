@@ -9,7 +9,7 @@ use IC\Gherkinics\Exception\SemanticError;
 use IC\Gherkinics\Util\Output;
 
 /**
- * Core
+ * Gherkinics Core
  *
  * @author Juti Noppornpitak <jutin@nationalfibre.net>
  */
@@ -30,6 +30,9 @@ final class Core
      */
     private $analyzerManager;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->pathToFeedbackMap = array();
@@ -46,11 +49,23 @@ final class Core
         $this->basePath = $basePath;
     }
 
+    /**
+     * Define the analyzer manager
+     *
+     * @param \IC\Gherkinics\AnalyzerManager $analyzerManager
+     */
     final public function setAnalyzerManager(AnalyzerManager $analyzerManager)
     {
         $this->analyzerManager = $analyzerManager;
     }
 
+    /**
+     * Validate file
+     *
+     * @param string $filePath
+     *
+     * @return \IC\Gherkinics\Feedback\FileFeedback
+     */
     final public function validate($filePath)
     {
         if ( ! file_exists($filePath)) {
@@ -62,6 +77,13 @@ final class Core
         return $this->analyzerManager->analyze($content);
     }
 
+    /**
+     * Scan and validate the path
+     *
+     * @param string $path
+     *
+     * @return array
+     */
     public function scan($path)
     {
         foreach (glob($path) as $subPath) {
@@ -77,7 +99,11 @@ final class Core
 
             $feedbackMap = $this->validate($subPath);
             
-            $this->output->write(empty($feedbackMap) ? '.' : '!');
+            $this->output->write($feedbackMap->count() > 0 ? '!' : '.');
+            
+            if ($feedbackMap->count() === 0) {
+                continue;
+            }
 
             $this->pathToFeedbackMap[$subPath] = $this->validate($subPath);
         }

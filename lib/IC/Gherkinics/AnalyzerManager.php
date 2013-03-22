@@ -21,6 +21,11 @@ use IC\Gherkinics\Model\Tag;
 use IC\Gherkinics\Model\TagLine;
 use IC\Gherkinics\Model\Token;
 
+/**
+ * Analyzer Manager
+ *
+ * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
+ */
 final class AnalyzerManager
 {
     /**
@@ -33,11 +38,21 @@ final class AnalyzerManager
      */
     private $analyzerList = array();
 
+    /**
+     * Define the lexer
+     *
+     * @param \IC\Gherkinics\Lexer $lexer
+     */
     public function setLexer(Lexer $lexer)
     {
         $this->lexer = $lexer;
     }
 
+    /**
+     * Register analyzer
+     *
+     * @param \IC\Gherkinics\Analyzer\AnalyzerInterface $analyzer
+     */
     public function registerAnalyzer(AnalyzerInterface $analyzer)
     {
         $this->analyzerList[] = $analyzer;
@@ -47,6 +62,8 @@ final class AnalyzerManager
      * Analyze the content
      *
      * @param string $content
+     *
+     * @return \IC\Gherkinics\Feedback\FileFeedback
      */
     public function analyze($content)
     {

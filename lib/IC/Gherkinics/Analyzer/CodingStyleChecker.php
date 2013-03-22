@@ -16,6 +16,11 @@ class CodingStyleChecker implements AnalyzerInterface
 {
     private $numberOfSpacesPerIndentation = 4;
 
+    /**
+     * Define the number of spaces per indentation level
+     *
+     * @param integer $numberOfSpacesPerIndentation
+     */
     public function setNumberOfSpacesPerIndentation($numberOfSpacesPerIndentation)
     {
         $this->numberOfSpacesPerIndentation = $numberOfSpacesPerIndentation;

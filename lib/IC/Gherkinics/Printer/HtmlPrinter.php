@@ -4,6 +4,13 @@
  */
 namespace IC\Gherkinics\Printer;
 
+/**
+ * File Printer
+ *
+ * This printer produces reports in HTML and export them to a specified location.
+ *
+ * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
+ */
 class HtmlPrinter
 {
     /**
@@ -26,6 +33,15 @@ class HtmlPrinter
      */
     private $environment;
 
+    /**
+     * Constructor
+     *
+     * @param string $loaderPath
+     * @param string $resourcePath
+     * @param string $outputPath
+     * @param string $scannedPath
+     * @param string $cachePath
+     */
     public function __construct($loaderPath, $resourcePath, $outputPath, $scannedPath, $cachePath = null)
     {
         $environmentOption = $cachePath === null
@@ -50,7 +66,9 @@ class HtmlPrinter
     }
 
     /**
-     * {@inheritdoc}
+     * Display feedback
+     *
+     * @param array $pathToFeedbackMap
      */
     public function doPrint(array $pathToFeedbackMap)
     {
@@ -84,16 +102,34 @@ class HtmlPrinter
         $this->copyStaticResource();
     }
 
+    /**
+     * Copy static resource
+     */
     private function copyStaticResource()
     {
         exec(sprintf('cp -r %s %s', $this->resourcePath, $this->outputPath));
     }
 
+    /**
+     * Render template
+     *
+     * @param string $templatePath
+     * @param array  $contextVariableMap
+     *
+     * @return string
+     */
     private function render($templatePath, $contextVariableMap = array())
     {
         return $this->environment->render($templatePath, $contextVariableMap);
     }
 
+    /**
+     * Export the rendered report to file
+     *
+     * @param string $templatePath
+     * @param string $outputName
+     * @param array  $contextVariableMap
+     */
     private function export($templatePath, $outputName, $contextVariableMap = array())
     {
         $filePath = $this->outputPath . '/' . $outputName;
@@ -106,6 +142,13 @@ class HtmlPrinter
         file_put_contents($filePath, $output);
     }
 
+    /**
+     * Print summary
+     *
+     * @param string $templatePath
+     * @param string $outputName
+     * @param array  $contextVariableMap
+     */
     private function printSummary(array $pathToFeedbackMap, array $pathToDataMap)
     {
         $relativePathToDataMap    = array();
@@ -129,6 +172,12 @@ class HtmlPrinter
         );
     }
 
+    /**
+     * Print multiple per-file reports
+     *
+     * @param array $pathToFeedbackMap
+     * @param array $pathToDataMap
+     */
     private function printMultipleReports(array $pathToFeedbackMap, array $pathToDataMap)
     {
         foreach ($pathToDataMap as $filePath => $dataMap) {

@@ -13,6 +13,13 @@ use IC\Gherkinics;
  */
 final class Lexer
 {
+    /**
+     * Analyze and tokenize the content
+     *
+     * @param string $content
+     *
+     * @return array
+     */
     public function analyze($content)
     {
         $lineList      = $this->cleanUp($content);
@@ -38,10 +45,15 @@ final class Lexer
         return $tokenList;
     }
 
+    /**
+     * Construct a model/token from the content.
+     *
+     * @param integer $lineNo the line number
+     * @param string  $content
+     */
     private function makeModel($lineNo, $content)
     {
         if (preg_match('/^\s*$/', $content)) {
-            // Note: will be removed in the future.
             return new Model\Blank($lineNo, $content, null);
         }
 
@@ -87,6 +99,13 @@ final class Lexer
         throw new \RuntimeException('Unable to determine the type of token.');
     }
 
+    /**
+     * Clean up the content
+     *
+     * @param string $content
+     *
+     * @return array the list of lines
+     */
     private function cleanUp($content)
     {
         $lineNumber  = 0;

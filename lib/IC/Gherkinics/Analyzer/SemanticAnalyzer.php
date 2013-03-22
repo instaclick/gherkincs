@@ -108,8 +108,12 @@ class SemanticAnalyzer implements AnalyzerInterface
 
     public function assertSemanticQuality(Model\Token $token, FileFeedback $fileFeedback)
     {
+        $isPossibleAction    = preg_match('/ (fill|click|select|follow) /', $token->getContext());
+        $isPossibleAssertion = preg_match('/ (must|should) /', $token->getContext());
+
         if (
-            preg_match('/ (fill|click|select|follow) /', $token->getContext())
+            $isPossibleAction
+            && ! $isPossibleAssertion
             && ! (
                 $token instanceof Model\Action
                 || ($this->previousToken instanceof Model\Action && $token instanceof Model\Continuation)
@@ -121,7 +125,8 @@ class SemanticAnalyzer implements AnalyzerInterface
         }
 
         if (
-            preg_match('/ (must|should) /', $token->getContext())
+            $isPossibleAssertion
+            && ! $isPossibleAction
             && ! $token instanceof Model\Assertion
             && ! ($this->previousToken instanceof Model\Assertion && $token instanceof Model\Continuation)
         ) {

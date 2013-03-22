@@ -1,4 +1,7 @@
 <?php
+/**
+ * @copyright 2013 Instaclick Inc.
+ */
 namespace IC\Gherkinics\Printer;
 
 use IC\Gherkinics\Util\Output;
@@ -29,7 +32,9 @@ class TerminalPrinter
     }
 
     /**
-     * {@inheritdoc}
+     * Display feedback
+     *
+     * @param array $pathToFeedbackMap
      */
     public function doPrint(array $pathToFeedbackMap)
     {

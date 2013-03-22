@@ -113,6 +113,10 @@ function main($argumentList)
     $output->writeln('Analysis complete.');
     $output->writeln(PHP_EOL . 'Please note that this tool only detects classic errors.');
     $output->writeln('Bye bye!');
+
+    if (count($pathToFeedbackMap) > 0) {
+        exit(1);
+    }
 }
 
 main(array_slice($argv, 1));

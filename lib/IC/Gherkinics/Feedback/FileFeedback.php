@@ -27,7 +27,7 @@ final class FileFeedback
      * @var array
      */
     private $messageList = array();
-    
+
     /**
      * @var boolean
      */
@@ -37,7 +37,7 @@ final class FileFeedback
     {
         $this->tokenList = $tokenList;
     }
-    
+
     public function getTokenList()
     {
         return $this->tokenList;
@@ -53,6 +53,11 @@ final class FileFeedback
         $this->currentToken = $token;
     }
 
+    /**
+     * Add the message
+     *
+     * @param string $message
+     */
     public function add($message)
     {
         $lineNumber = $this->currentToken
@@ -66,12 +71,17 @@ final class FileFeedback
         $this->messageList[$lineNumber]->add($message);
     }
 
+    /**
+     * Retrieve all token feedbacks
+     *
+     * @return array
+     */
     public function all()
     {
         if ($this->sorted) {
             return $this->messageList;
         }
-        
+
         $messageList    = array();
         $lineNumberList = array_keys($this->messageList);
 
@@ -80,16 +90,33 @@ final class FileFeedback
         foreach ($lineNumberList as $lineNumber) {
             $messageList[$lineNumber] = $this->messageList[$lineNumber];
         }
-        
+
         $this->sorted = true;
 
         return $this->messageList = $messageList;
     }
-    
+
+    /**
+     * Retrieve the number of token feedbacks
+     *
+     * @return integer
+     */
+    public function count()
+    {
+        return count($this->messageList);
+    }
+
+    /**
+     * Retrieve a token feedback
+     *
+     * @param integer $id
+     *
+     * @return \IC\Gherkinics\Feedback\TokenFeedback|null
+     */
     public function get($id)
     {
         return isset($this->messageList[$id])
             ? $this->messageList[$id]
-            : array();
+            : null;
     }
 }
