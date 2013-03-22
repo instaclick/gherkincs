@@ -1,7 +1,21 @@
 @import url('layout.css');
 
+header {
+    position: fixed !important;
+    float: right;
+    right: 40px;
+}
+
 h1 small {
     display: block;
+}
+
+#view-mode:after {
+    content: ' Violations Only';
+}
+
+#view-mode.active:after {
+    content: ' Everything';
 }
 
 .code {
@@ -11,6 +25,12 @@ h1 small {
     box-shadow: #ddd 0 0 20px;
 }
 
+.line {
+    transition: all ease 250ms;
+    -moz-transition: all ease 250ms;
+    -webkit-transition: all ease 250ms;
+}
+
 .line-no {
     position: absolute;
 }
@@ -18,16 +38,38 @@ h1 small {
 .token {
     font-family: 'Monaco', monospace;
     white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
     color: #FF4444;
     padding-left: 40px;
     min-height: 30px;
 }
 
-.space {
-    border-bottom: 2px solid #eee;
+.token .syntax {
+    font-weight: bold;
 }
 
-.tab {
+.token .syntax.comment {
+    color: #ccc;
+}
+
+.token .syntax.feature {
+    color: #9933CC;
+}
+
+.token .syntax.scenario {
+    color: #669900;
+}
+
+.token .syntax.step {
+    color: #0099CC;
+}
+
+.token .syntax.quote {
+    color: #FF8800;
+}
+
+.token .tab {
     border-bottom: 2px solid #FF4444;
 }
 
@@ -40,6 +82,7 @@ h1 small {
     border: 1px dashed #ddd;
     padding: 20px;
     margin: 5px 0;
+    margin-left: 40px;
 }
 
 .notes h2 {

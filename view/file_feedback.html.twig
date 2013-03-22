@@ -7,44 +7,123 @@
 </head>
 <body>
 <article class="container-fluid">
+    <header class="btn-group">
+        <a href="index.html" title="Summary" class="btn"><i class="icon-arrow-left"></i> Summary</a>
+        <button type="button" id="view-mode" class="btn">Show</button>
+        <a href="#top" title="Go to the top" class="btn"><i class="icon-arrow-up"></i></a>
+    </header>
     <h1><small>{{ dataMap.directory }}</small>{{ dataMap.name }}</h1>
     <div class="code">
         {% for token in feedbackMap.tokenList %}
             {% set tokenFeedback = feedbackMap.get(token.id) %}
 
-            <div class="line-no">{{ token.id }}</div>
-            <div class="token {% if not tokenFeedback %}ignored{% endif %}">{{ token.rawContent }}</div>
+            <div class="line" style="">
+                <div class="line-no">{{ token.id }}</div>
+                <div class="token {% if not tokenFeedback %}ignored{% endif %}">{{ token.rawContent }}</div>
 
-            {% if tokenFeedback %}
-                <article class="notes">
-                    <div class="row">
-                        <div class="span2">
-                            <h2>{{ tokenFeedback.count }} <small>violation(s)</small></h2>
+                {% if tokenFeedback %}
+                    <article class="notes">
+                        <div class="row">
+                            <div class="span2">
+                                <h2>
+                                    {{ tokenFeedback.count }}
+                                    <small>violation{% if tokenFeedback.count != 1 %}s{% endif %}</small>
+                                </h2>
+                            </div>
+                            <div class="span9">
+                                <ul>{% for violation in tokenFeedback.all %}
+                                    <li>{{ violation }}</li>
+                                {% endfor %}</ul>
+                            </div>
                         </div>
-                        <div class="span9">
-                            <ul>{% for violation in tokenFeedback.all %}
-                                <li>{{ violation }}</li>
-                            {% endfor %}</ul>
-                        </div>
-                    </div>
-                </article>
-            {% endif %}
+                    </article>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
 </article>
 <script>
 window.onload = function () {
     'use strict';
-    var tokenList = document.getElementsByClassName('token'), i, l, line;
+    var tokenList = document.getElementsByClassName('token'),
+        whitespaceEntity = '&nbsp;',
+        token,
+        i,
+        l,
+        line;
 
     for (i = 0, l = tokenList.length; i < l; i++) {
-        line = String(tokenList[i].innerHTML);
+        token = tokenList[i];
 
-        line = line.replace(new RegExp(' ', 'g'), '<span class="space">&nbsp;</span>');
-        line = line.replace(new RegExp('\t', 'g'), '<span class="tab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
+        // Apply syntax highlighting
+        line = String(token.innerHTML);
 
-        tokenList[i].innerHTML = line;
+        line = line.replace(
+            new RegExp(' ', 'g'),
+            whitespaceEntity
+        );
+        line = line.replace(
+            new RegExp('"([^\"]*)"'),
+            '<span class="syntax quote">"$1"</span>'
+        );
+        line = line.replace(
+            new RegExp('\'([^\']*)\''),
+            '<span class="syntax quote">\'$1\'</span>'
+        );
+        line = line.replace(
+            new RegExp('\t', 'g'),
+            '<span class="tab">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+        );
+        line = line.replace(
+            new RegExp('(#.*)'),
+            '<span class="syntax comment">$1</span>'
+        );
+        line = line.replace(
+            new RegExp('(Feature):'),
+            '<span class="syntax feature">$1:</span>'
+        );
+        line = line.replace(
+            new RegExp('(Background|Scenario|Scenario Outline):'),
+            '<span class="syntax scenario">$1:</span>'
+        );
+        line = line.replace(
+            new RegExp('(And|Given|Then|When)'),
+            '<span class="syntax step">$1</span>'
+        );
+
+        token.innerHTML = line;
     }
+
+    // Add the event listener to the view toggler
+    document
+        .getElementById('view-mode')
+        .addEventListener('click', function (e) {
+            var doDeactivate = (e.target.getAttribute('class').match('active'));
+
+            e.preventDefault();
+
+            e.target.setAttribute('class', doDeactivate ? 'btn' : 'btn active');
+
+            for (i = 0, l = tokenList.length; i < l; i++) {
+                token = tokenList[i];
+
+                if (doDeactivate) {
+                    console.log('A');
+                    token.parentNode.setAttribute('style', '');
+
+                    continue;
+                }
+
+                console.log('B');
+
+                token.parentNode.setAttribute(
+                    'style',
+                    (String(token.getAttribute('class')).match(new RegExp('ignored')))
+                        ? 'display: none;'
+                        : ''
+                );
+            }
+        });
 };
 </script>
 </body>

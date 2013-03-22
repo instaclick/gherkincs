@@ -27,12 +27,18 @@
     display: block;
     color: #ccc;
     font-size: 12px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .file-list li a .name {
     display: block;
     font-size: 18px;
     color: #000;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .file-list li .score {
@@ -50,4 +56,8 @@
     margin-top: -11px;
     margin-right: -11px;
     min-width: 21px;
+}
+
+.file-list li:hover {
+    box-shadow: #33B5E5 0 0 10px;
 }

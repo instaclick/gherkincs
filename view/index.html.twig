@@ -13,17 +13,14 @@
             No violations delected by the code sniffer. Please note that I'm not a Gherkin god.
         </p>
     {% else %}
-        <p>
-            There are up to {{ maximumViolatedLineCount }} lines per file which violate the coding standards.
-        </p>
         <ul class="file-list">
             {% for path, data in relativePathToDataMap %}
                 {% if data.violatedLineCount > 0 %}
                     <li>
                         <div class="score">{{ data.violatedLineCount }}</div>
                         <a href="{{ data.hash }}.html" title="{{ path }}">
-                            <span class="directory">{{ data.directory }}</span>
-                            <span class="name">{{ data.name }}</span>
+                            <span class="directory" title="{{ data.directory }}">{{ data.directory }}</span>
+                            <span class="name" title="{{ data.name }}">{{ data.name }}</span>
                         </a>
                     </li>
                 {% endif %}
