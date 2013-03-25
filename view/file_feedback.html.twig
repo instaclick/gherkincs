@@ -43,7 +43,7 @@
                 <div class="token {% if not tokenFeedback %}ignored{% endif %}">{{ token.rawContent }}</div>
 
                 {% if tokenFeedback %}
-                    <article class="token notes">
+                    <article class="notes">
                         <h2>
                             {{ tokenFeedback.count }}
                             <small>violation{% if tokenFeedback.count != 1 %}s{% endif %}</small>
@@ -123,6 +123,10 @@ window.onload = function () {
         line = line.replace(
             new RegExp('(And|Given|Then|When)'),
             '<span class="syntax step">$1</span>'
+        );
+        line = line.replace(
+            new RegExp('(\\\{[^\\\}]+\\\})'),
+            '<span class="syntax variable">$1</span>'
         );
 
         // Apply extra highlighting.

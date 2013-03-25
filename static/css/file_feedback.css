@@ -56,6 +56,7 @@ h1 small {
 
 .line .token .syntax {
     font-weight: bold;
+    border-radius: 3px;
 }
 
 .line .token .syntax.comment {
@@ -78,9 +79,13 @@ h1 small {
     color: #FF8800;
 }
 
+.line .token .syntax.variable {
+    color: #fff;
+    background: #666;
+}
+
 .line .token .syntax.extra-spaces {
     background-color: #FF4444;
-    border-radius: 5px;
 }
 
 .line .token .tab {
@@ -119,4 +124,9 @@ h1 small {
 
 .line[data-type="tagline"] .token {
     color: #FF8800;
+}
+
+.line .token .syntax.comment .syntax {
+    color: #fff;
+    background: #cc0000;
 }
