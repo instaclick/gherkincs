@@ -128,6 +128,14 @@ class CodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
                     1 => '/trailing spaces/',
                 ),
             ),
+            array(
+                1,
+                'Feature',
+                "Feature:  rock and roll!",
+                array(
+                    0 => '/Extra/',
+                ),
+            ),
         );
     }
 

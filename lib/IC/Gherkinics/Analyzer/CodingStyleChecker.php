@@ -31,9 +31,16 @@ class CodingStyleChecker implements AnalyzerInterface
         foreach ($tokenList as $token) {
             $fileFeedback->setCurrentToken($token);
             $this->validateIndentation($token, $fileFeedback);
+            $this->assertExtraWhitespaces($token, $fileFeedback);
         }
     }
 
+    /**
+     * Validate indentation
+     *
+     * @param \IC\Gherkinics\Model\Token           $token
+     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback
+     */
     private function validateIndentation(Model\Token $token, FileFeedback $fileFeedback)
     {
         $rawContent = $token->getRawContent();
@@ -117,6 +124,14 @@ class CodingStyleChecker implements AnalyzerInterface
         }
     }
 
+    /**
+     * Produce a comment about improper indentation.
+     *
+     * @param integer $identationLevel
+     * @param integer $numberOfLeadingSpaces
+     *
+     * @return string
+     */
     private function makeCommentOnImproperIndentation($indentationLevel, $numberOfLeadingSpaces)
     {
         return sprintf(
@@ -125,5 +140,24 @@ class CodingStyleChecker implements AnalyzerInterface
             $indentationLevel * $this->numberOfSpacesPerIndentation,
             $indentationLevel
         );
+    }
+
+    /**
+     * Validate indentation
+     *
+     * @param \IC\Gherkinics\Model\Token           $token
+     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback
+     */
+    private function assertExtraWhitespaces(Model\Token $token, FileFeedback $fileFeedback)
+    {
+        if ($token instanceof Model\TabularData) {
+            return;
+        }
+
+        $actualContext = trim($token->getRawContent());
+
+        if (preg_match('/\s{2,}/', $actualContext)) {
+            $fileFeedback->add($token->makeComment('Extra whitespaces'));
+        }
     }
 }

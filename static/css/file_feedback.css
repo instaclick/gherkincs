@@ -4,6 +4,7 @@ header {
     position: fixed !important;
     float: right;
     right: 40px;
+    z-index: 1;
 }
 
 h1 small {
@@ -18,82 +19,104 @@ h1 small {
     content: ' Everything';
 }
 
+.file.notes {
+    padding: 20px;
+    background: #fff;
+    box-shadow: #ddd 0 0 20px;
+    margin: 0 0 20px 0;
+}
+
 .code {
-    overflow: hidden;
     padding: 20px;
     background: #fff;
     box-shadow: #ddd 0 0 20px;
 }
 
 .line {
-    transition: all ease 250ms;
-    -moz-transition: all ease 250ms;
-    -webkit-transition: all ease 250ms;
+    position: relative;
     border-bottom: 1px solid #eee;
     line-height: 30px;
 }
 
-.line-no {
+.line .line-no {
     position: absolute;
+    text-align: right;
+    padding-right: 5px;
+    width: 35px;
 }
 
-.token {
+.line .token {
     font-family: 'Monaco', monospace;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    padding-left: 40px;
+    padding-left: 50px;
     min-height: 30px;
 }
 
-.token .syntax {
+.line .token .syntax {
     font-weight: bold;
 }
 
-.token .syntax.comment {
+.line .token .syntax.comment {
     color: #ccc;
 }
 
-.token .syntax.feature {
+.line .token .syntax.feature {
     color: #9933CC;
 }
 
-.token .syntax.scenario {
+.line .token .syntax.scenario {
     color: #669900;
 }
 
-.token .syntax.step {
+.line .token .syntax.step {
     color: #0099CC;
 }
 
-.token .syntax.quote {
+.line .token .syntax.quote {
     color: #FF8800;
 }
 
-.token .syntax.trailing-spaces {
+.line .token .syntax.extra-spaces {
     background-color: #FF4444;
     border-radius: 5px;
 }
 
-.token .tab {
+.line .token .tab {
     border-bottom: 2px solid #FF4444;
 }
 
-.token.ignored {
+.line .token.ignored {
     color: #999;
 }
 
-.notes {
+.line .notes {
     border: 1px dashed #ddd;
     padding: 20px;
     margin: 5px 0;
-    margin-left: 40px;
+    margin-left: 50px;
 }
 
-.notes h2 {
+.line .notes h2 {
     margin: 0;
 }
 
 .code > .line:first-child {
     border-top: 1px solid #eee;
+}
+
+.line.warning .line-no {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    color: #fff;
+    margin-left: -30px;
+    padding-left: 30px;
+    background-color: #FF8800;
+    box-shadow: #ddd 0 0 5px;
+}
+
+.line[data-type="tagline"] .token {
+    color: #FF8800;
 }

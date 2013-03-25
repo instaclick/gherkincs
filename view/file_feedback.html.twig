@@ -13,30 +13,46 @@
         <a href="#top" title="Go to the top" class="btn"><i class="icon-arrow-up"></i></a>
     </header>
     <h1><small>{{ dataMap.directory }}</small>{{ dataMap.name }}</h1>
+    {# Per-file #}
+    {% set tokenFeedback = feedbackMap.get(0) %}
+
+    {% if tokenFeedback %}
+        <article class="file notes">
+            <h2>
+                {{ tokenFeedback.count }}
+                <small>
+                    violation{% if tokenFeedback.count != 1 %}s{% endif %}
+                    for this file
+                </small>
+            </h2>
+            <ul>
+                {% for violation in tokenFeedback.all %}
+                    <li>{{ violation }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+    {% endif %}
     {% spaceless %}
     <div class="code">
+        {# Per-line feedback #}
         {% for token in feedbackMap.tokenList %}
             {% set tokenFeedback = feedbackMap.get(token.id) %}
 
-            <div class="line" style="">
+            <div class="line {% if tokenFeedback %}warning{% endif %}" style="" data-type="{{ token.className | lower }}">
                 <div class="line-no">{{ token.id }}</div>
                 <div class="token {% if not tokenFeedback %}ignored{% endif %}">{{ token.rawContent }}</div>
 
                 {% if tokenFeedback %}
-                    <article class="notes">
-                        <div class="row">
-                            <div class="span2">
-                                <h2>
-                                    {{ tokenFeedback.count }}
-                                    <small>violation{% if tokenFeedback.count != 1 %}s{% endif %}</small>
-                                </h2>
-                            </div>
-                            <div class="span9">
-                                <ul>{% for violation in tokenFeedback.all %}
-                                    <li>{{ violation }}</li>
-                                {% endfor %}</ul>
-                            </div>
-                        </div>
+                    <article class="token notes">
+                        <h2>
+                            {{ tokenFeedback.count }}
+                            <small>violation{% if tokenFeedback.count != 1 %}s{% endif %}</small>
+                        </h2>
+                        <ul>
+                            {% for violation in tokenFeedback.all %}
+                                <li>{{ violation }}</li>
+                            {% endfor %}
+                        </ul>
                     </article>
                 {% endif %}
             </div>
@@ -50,20 +66,32 @@ window.onload = function () {
     var tokenList = document.getElementsByClassName('token'),
         whitespaceEntity = '&nbsp;',
         token,
+        type,
         i,
         l,
         line;
 
     for (i = 0, l = tokenList.length; i < l; i++) {
         token = tokenList[i];
+        type  = token.getAttribute('data-type');
 
         // Apply syntax highlighting
         line = String(token.innerHTML);
+
+        // Prepare extra highlighting
+        if (type === 'tabulardata') {
+            line = line.replace(
+                new RegExp('([^\\\s])(\\\s{2,})([^\\\s])', 'g'),
+                '$1__ews_begin__$2__ews_end__$3'
+            );
+        }
 
         line = line.replace(
             new RegExp('(\\\s+)$'),
             '__tsp_begin__$1__tsp_end__'
         );
+
+        // Normal highlighting
         line = line.replace(
             new RegExp(' ', 'g'),
             whitespaceEntity
@@ -96,9 +124,15 @@ window.onload = function () {
             new RegExp('(And|Given|Then|When)'),
             '<span class="syntax step">$1</span>'
         );
+
+        // Apply extra highlighting.
+        line = line.replace(
+            new RegExp('__ews_begin__(.+)__ews_end__'),
+            '<span class="syntax extra-spaces">$1</span>'
+        );
         line = line.replace(
             new RegExp('__tsp_begin__(.+)__tsp_end__$'),
-            '<span class="syntax trailing-spaces">$1</span>'
+            '<span class="syntax extra-spaces">$1</span>'
         );
 
         token.innerHTML = line;
@@ -118,13 +152,10 @@ window.onload = function () {
                 token = tokenList[i];
 
                 if (doDeactivate) {
-                    console.log('A');
                     token.parentNode.setAttribute('style', '');
 
                     continue;
                 }
-
-                console.log('B');
 
                 token.parentNode.setAttribute(
                     'style',
