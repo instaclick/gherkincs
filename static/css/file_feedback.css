@@ -79,13 +79,20 @@ h1 small {
     color: #FF8800;
 }
 
-.line .token .syntax.variable {
-    color: #fff;
-    background: #666;
-}
-
 .line .token .syntax.extra-spaces {
     background-color: #FF4444;
+}
+
+.line .token .syntax.leading-spaces {
+    margin-left: -1px;
+    padding-right: 1px;
+}
+
+.line .token .syntax.leading-spaces .space {
+    border-radius: 0;
+    margin-right: -1px;
+    border-left: 1px solid #fff;
+    background-color: #eee;
 }
 
 .line .token .tab {
@@ -122,11 +129,9 @@ h1 small {
     color: #999;
 }
 
-.line .token:not(.ignored) .syntax.leading-spaces .space {
-    border-radius: 0;
-    padding-right: -1px;
-    border-right: 1px solid #fff;
-    background-color: #eee;
+.line .token.ignored .syntax.leading-spaces .space {
+    border-left-color: transparent;
+    background-color: transparent;
 }
 
 .line[data-type="tagline"] .token {

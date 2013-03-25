@@ -79,7 +79,7 @@ window.onload = function () {
         line = String(token.innerHTML);
 
         // Prepare extra highlighting
-        if (type === 'tabulardata') {
+        if (type !== 'tabulardata') {
             line = line.replace(
                 new RegExp('([^\\\s])(\\\s{2,})([^\\\s])', 'g'),
                 '$1__ews_begin__$2__ews_end__$3'
@@ -91,7 +91,7 @@ window.onload = function () {
             new RegExp('(\\\s+)$'),
             '__tsp_begin__$1__tsp_end__'
         );
-
+        
         // Leading spaces
         line = line.replace(
             new RegExp('^(\\\s+)'),
@@ -130,10 +130,6 @@ window.onload = function () {
         line = line.replace(
             new RegExp('(And|Given|Then|When)'),
             '<span class="syntax step">$1</span>'
-        );
-        line = line.replace(
-            new RegExp('(\\\{[^\\\}]+\\\})'),
-            '<span class="syntax variable">$1</span>'
         );
 
         // Apply extra highlighting.
