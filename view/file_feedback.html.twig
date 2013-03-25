@@ -32,7 +32,6 @@
             </ul>
         </article>
     {% endif %}
-    {% spaceless %}
     <div class="code">
         {# Per-line feedback #}
         {% for token in feedbackMap.tokenList %}
@@ -58,7 +57,6 @@
             </div>
         {% endfor %}
     </div>
-    {% endspaceless %}
 </article>
 <script>
 window.onload = function () {
@@ -73,7 +71,7 @@ window.onload = function () {
 
     for (i = 0, l = tokenList.length; i < l; i++) {
         token = tokenList[i];
-        type  = token.getAttribute('data-type');
+        type  = token.parentNode.getAttribute('data-type');
 
         // Apply syntax highlighting
         line = String(token.innerHTML);
