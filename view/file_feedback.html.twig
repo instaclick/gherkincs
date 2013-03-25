@@ -86,9 +86,16 @@ window.onload = function () {
             );
         }
 
+        // Trailing spaces
         line = line.replace(
             new RegExp('(\\\s+)$'),
             '__tsp_begin__$1__tsp_end__'
+        );
+
+        // Leading spaces
+        line = line.replace(
+            new RegExp('^(\\\s+)'),
+            '__lsp_begin__$1__lsp_end__'
         );
 
         // Normal highlighting
@@ -131,12 +138,20 @@ window.onload = function () {
 
         // Apply extra highlighting.
         line = line.replace(
-            new RegExp('__ews_begin__(.+)__ews_end__'),
+            new RegExp('__ews_begin__(.+)__ews_end__', 'g'),
             '<span class="syntax extra-spaces">$1</span>'
         );
         line = line.replace(
-            new RegExp('__tsp_begin__(.+)__tsp_end__$'),
+            new RegExp('__tsp_begin__(.+)__tsp_end__$', 'g'),
             '<span class="syntax extra-spaces">$1</span>'
+        );
+        line = line.replace(
+            new RegExp('__lsp_begin__(.+)__lsp_end__'),
+            '<span class="syntax leading-spaces">$1</span>'
+        );
+        line = line.replace(
+            new RegExp(whitespaceEntity, 'g'),
+            '<span class="syntax space">' + whitespaceEntity + '</span>'
         );
 
         token.innerHTML = line;

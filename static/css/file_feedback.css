@@ -92,10 +92,6 @@ h1 small {
     border-bottom: 2px solid #FF4444;
 }
 
-.line .token.ignored {
-    color: #999;
-}
-
 .line .notes {
     border: 1px dashed #ddd;
     padding: 20px;
@@ -122,11 +118,22 @@ h1 small {
     box-shadow: #ddd 0 0 5px;
 }
 
+.line .token.ignored {
+    color: #999;
+}
+
+.line .token:not(.ignored) .syntax.leading-spaces .space {
+    border-radius: 0;
+    padding-right: -1px;
+    border-right: 1px solid #fff;
+    background-color: #eee;
+}
+
 .line[data-type="tagline"] .token {
     color: #FF8800;
 }
 
-.line .token .syntax.comment .syntax {
+.line .token .syntax.comment .syntax:not(.space) {
     color: #fff;
     background: #cc0000;
 }
