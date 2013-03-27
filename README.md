@@ -40,26 +40,26 @@ This analyzer first checks for the given-when-then context flow (precondition-ac
 
 #### Semantic Quality
 
-It also assert one of the conditions:
+It also asserts one of the conditions:
 
 * any contexts containing "click", "fill", "follow", or "select" is an action,
 * any contexts containing "should" or "must" is an assertion.
 
-When a context does not satisfy two or more conditions, the analyzer will be given no warnings and consider as an exception.
+When a context does not satisfy two or more conditions, the analyzer will consider it an exception (and emit no warnings).
 
 ### Coding Style Checker
 
 This analyzer checks if:
 
 * **tab characters** are not used,
-* the width of indentation is inconsistent where the default width is **4 spaces**,
-* there exists **trailing spaces**,
-* features will have **no leading spaces** (no indentation),
+* the width of indentation is consistent where the default width is **4 spaces**,
+* there exists no **trailing spaces**,
+* features have **no leading spaces** (no indentation),
 * backgrounds, scenarios, and scenario outlines have exactly **one** level of indentation,
-preconditions, actions, assertions and continuations have exactly **two** levels of indentation,
+* preconditions, actions, assertions and continuations have exactly **two** levels of indentation,
 * tabular data has exactly **three** levels of indentation,
-* tag lines has at most **one** level of indentation.
-* extra spaces occurs in non-tabular-data context
+* tag lines have at most **one** level of indentation,
+* extra spaces (two or more whitespaces) occur in non-tabular-data contexts.
 
 ### Instaclick's Coding Style Checker
 
