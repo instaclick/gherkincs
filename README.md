@@ -5,7 +5,6 @@ By Juti Noppornpitak
 ## Dependencies
 
 * twig (dev-master, required for HTML report)
-* PHPUnit (dev-master, development only)
 
 ## Installation
 
@@ -21,24 +20,32 @@ To use this tool, please run `php cuke.php [--html <directory_to_put_reports>] <
 
 ### Semantic Analyzer
 
+#### Context Flow
+
 This analyzer first checks for the given-when-then context flow (precondition-action-assertion) in the following patterns:
 
-* Precondition
-** Continuation (as precondition)
-** Action
-** Assertion
-* Action
-** Continuation (as action)
-** Assertion
-* Assertion
-** Continuation (as assertion)
-** Precondition
-** Action
+    Precondition
+      -> Continuation (as precondition)
+      -> Action
+      -> Assertion
 
-It also see if:
+    Action
+      -> Continuation (as action)
+      -> Assertion
+
+    Assertion
+      -> Continuation (as assertion)
+      -> Precondition
+      -> Action
+
+#### Semantic Quality
+
+It also assert one of the conditions:
 
 * any contexts containing "click", "fill", "follow", or "select" is an action,
 * any contexts containing "should" or "must" is an assertion.
+
+When a context does not satisfy two or more conditions, the analyzer will be given no warnings and consider as an exception.
 
 ### Coding Style Checker
 
@@ -52,6 +59,7 @@ This analyzer checks if:
 preconditions, actions, assertions and continuations have exactly **two** levels of indentation,
 * tabular data has exactly **three** levels of indentation,
 * tag lines has at most **one** level of indentation.
+* extra spaces occurs in non-tabular-data context
 
 ### Instaclick's Coding Style Checker
 

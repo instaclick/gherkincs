@@ -14,11 +14,9 @@ use IC\Gherkinics\Model;
  */
 class ICCodingStyleChecker implements AnalyzerInterface
 {
-    public function setNumberOfSpacesPerIndentation($numberOfSpacesPerIndentation)
-    {
-        $this->numberOfSpacesPerIndentation = $numberOfSpacesPerIndentation;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function analyze(array $tokenList, FileFeedback $fileFeedback)
     {
         if (count($tokenList) > 350) {
@@ -31,6 +29,12 @@ class ICCodingStyleChecker implements AnalyzerInterface
         }
     }
 
+    /**
+     * Validate a tag line
+     *
+     * @param \IC\Gherkinics\Model\Token           $token        token
+     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback file feedback
+     */
     private function validateTagLine(Model\Token $token, FileFeedback $fileFeedback)
     {
         if ( ! $token instanceof Model\TagLine) {

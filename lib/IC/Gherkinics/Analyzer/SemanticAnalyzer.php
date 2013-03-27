@@ -19,11 +19,19 @@ class SemanticAnalyzer implements AnalyzerInterface
      */
     private $previousToken = null;
 
+    /**
+     * Define the previous token
+     *
+     * @param \IC\Gherkinics\Model\Token $previousToken the previous token
+     */
     public function setPreviousToken(Model\Token $previousToken)
     {
         $this->previousToken = $previousToken;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function analyze(array $tokenList, FileFeedback $fileFeedback)
     {
         $this->previousToken = null;
@@ -60,6 +68,14 @@ class SemanticAnalyzer implements AnalyzerInterface
         }
     }
 
+    /**
+     * Assert the context flow (semantic flow)
+     *
+     * {@internal This method is made publicly accessible to allow a focus and easy test case. }}
+     *
+     * @param \IC\Gherkinics\Model\Token           $token        token
+     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback file feedback
+     */
     public function assertContextFlow(Model\Token $token, FileFeedback $fileFeedback)
     {
         if (
@@ -106,6 +122,14 @@ class SemanticAnalyzer implements AnalyzerInterface
         }
     }
 
+    /**
+     * Assert for the semantic quality
+     *
+     * {@internal This method is made publicly accessible to allow a focus and easy test case. }}
+     *
+     * @param \IC\Gherkinics\Model\Token           $token        token
+     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback file feedback
+     */
     public function assertSemanticQuality(Model\Token $token, FileFeedback $fileFeedback)
     {
         $isPossibleAction    = preg_match('/ (fill|click|select|follow) /', $token->getContext());

@@ -13,5 +13,11 @@ use IC\Gherkinics\Feedback\FileFeedback;
  */
 interface AnalyzerInterface
 {
+    /**
+     * Analyze the token list
+     *
+     * @param array $tokenList    the list of tokens
+     * @param array $fileFeedback the file feedback bucket
+     */
     public function analyze(array $tokenList, FileFeedback $fileFeedback);
 }

@@ -14,18 +14,24 @@ use IC\Gherkinics\Model;
  */
 class CodingStyleChecker implements AnalyzerInterface
 {
+    /**
+     * @var integer
+     */
     private $numberOfSpacesPerIndentation = 4;
 
     /**
      * Define the number of spaces per indentation level
      *
-     * @param integer $numberOfSpacesPerIndentation
+     * @param integer $numberOfSpacesPerIndentation the number of spaces per indentation
      */
     public function setNumberOfSpacesPerIndentation($numberOfSpacesPerIndentation)
     {
         $this->numberOfSpacesPerIndentation = $numberOfSpacesPerIndentation;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function analyze(array $tokenList, FileFeedback $fileFeedback)
     {
         foreach ($tokenList as $token) {
@@ -38,8 +44,8 @@ class CodingStyleChecker implements AnalyzerInterface
     /**
      * Validate indentation
      *
-     * @param \IC\Gherkinics\Model\Token           $token
-     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback
+     * @param \IC\Gherkinics\Model\Token           $token        token
+     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback file feedback
      */
     private function validateIndentation(Model\Token $token, FileFeedback $fileFeedback)
     {
@@ -127,8 +133,8 @@ class CodingStyleChecker implements AnalyzerInterface
     /**
      * Produce a comment about improper indentation.
      *
-     * @param integer $identationLevel
-     * @param integer $numberOfLeadingSpaces
+     * @param integer $identationLevel       the indentation level
+     * @param integer $numberOfLeadingSpaces the number of leading spaces
      *
      * @return string
      */
@@ -145,8 +151,8 @@ class CodingStyleChecker implements AnalyzerInterface
     /**
      * Validate indentation
      *
-     * @param \IC\Gherkinics\Model\Token           $token
-     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback
+     * @param \IC\Gherkinics\Model\Token           $token        token
+     * @param \IC\Gherkinics\Feedback\FileFeedback $fileFeedback file feedback
      */
     private function assertExtraWhitespaces(Model\Token $token, FileFeedback $fileFeedback)
     {
