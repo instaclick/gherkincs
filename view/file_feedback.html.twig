@@ -86,7 +86,7 @@ window.onload = function () {
         if (type !== 'tabulardata') {
             line = line.replace(
                 new RegExp('([^\\\s])(\\\s{2,})([^\\\s])', 'g'),
-                '$1__ews_begin__$2__ews_end__$3'
+                '$1☀$2☀$3'
             );
         }
 
@@ -138,7 +138,7 @@ window.onload = function () {
 
         // Apply extra highlighting.
         line = line.replace(
-            new RegExp('__ews_begin__(.+)__ews_end__', 'g'),
+            new RegExp('☀([^☀]+)☀', 'g'),
             '<span class="syntax extra-spaces">$1</span>'
         );
         line = line.replace(

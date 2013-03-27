@@ -138,7 +138,9 @@ h1 small {
     color: #FF8800;
 }
 
-.line .token .syntax.comment .syntax:not(.space) {
+.line .token .syntax.comment .syntax.feature,
+.line .token .syntax.comment .syntax.scenario,
+.line .token .syntax.comment .syntax.step {
     color: #fff;
     background: #cc0000;
 }
