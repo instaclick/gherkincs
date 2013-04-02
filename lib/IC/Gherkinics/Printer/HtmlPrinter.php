@@ -72,22 +72,31 @@ class HtmlPrinter
      */
     public function doPrint(array $pathToFeedbackMap)
     {
-        $pathToDataMap = array();
-        $prefixLength  = strlen($this->scannedPath) + 1;
+        $pathToDataMap    = array();
+        $prefixLength     = strlen($this->scannedPath) + 1;
+        $fileScanningMode = count($pathToFeedbackMap) === 1;
 
         foreach ($pathToFeedbackMap as $filePath => $lineToViolationsMap) {
-            $relativePath      = substr($filePath, $prefixLength);
+            $relativePath      = $fileScanningMode ? $filePath : substr($filePath, $prefixLength);
             $violatedLineCount = count($lineToViolationsMap->all());
 
             $segmentList = array();
-
-            print $relativePath . PHP_EOL;
 
             preg_match(
                 '/(?P<directory>.+)\/(?P<name>[^\.]+)\.(?P<extension>.+)$/',
                 $relativePath,
                 $segmentList
             );
+
+            if ( ! $segmentList) {
+                preg_match(
+                    '/(?P<name>[^\.]+)\.(?P<extension>.+)$/',
+                    $relativePath,
+                    $segmentList
+                );
+
+                $segmentList['directory'] = '';
+            }
 
             $pathToDataMap[$filePath] = array(
                 'path'              => $relativePath,
