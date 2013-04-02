@@ -25,6 +25,12 @@ class TerminalPrinter
      */
     private $basePath;
 
+    /**
+     * Constructor
+     *
+     * @param \IC\Gherkinics\Util\Output $output
+     * @param string                     $basePath
+     */
     public function __construct(Output $output, $basePath)
     {
         $this->output   = $output;
