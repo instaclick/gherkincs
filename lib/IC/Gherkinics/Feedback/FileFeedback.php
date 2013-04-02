@@ -33,11 +33,21 @@ final class FileFeedback
      */
     private $sorted = false;
 
-    public function __construct(array $tokenList=array())
+    /**
+     * Constructor
+     *
+     * @param array $tokenList
+     */
+    public function __construct(array $tokenList = array())
     {
         $this->tokenList = $tokenList;
     }
 
+    /**
+     * Retrieve the list of tokens
+     *
+     * @return array
+     */
     public function getTokenList()
     {
         return $this->tokenList;

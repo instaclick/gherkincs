@@ -4,7 +4,7 @@
  */
 namespace IC\Gherkinics;
 
-use IC\Gherkinics;
+use IC\Gherkinics\Model;
 
 /**
  * Gherkin Lexer
@@ -50,6 +50,8 @@ final class Lexer
      *
      * @param integer $lineNo the line number
      * @param string  $content
+     *
+     * @return \IC\Gherkinics\Model\Token
      */
     private function makeModel($lineNo, $content)
     {

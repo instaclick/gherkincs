@@ -4,6 +4,11 @@
  */
 namespace IC\Gherkinics\Model;
 
+/**
+ * Token for Tag Line
+ *
+ * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
+ */
 class TagLine extends Token
 {
     /**
@@ -11,6 +16,9 @@ class TagLine extends Token
      */
     private $tagList = array();
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($id, $rawContent, $context)
     {
         parent::__construct($id, $rawContent, $context);
@@ -26,6 +34,11 @@ class TagLine extends Token
         }
     }
 
+    /**
+     * Retrieve the list of tags
+     *
+     * @return array
+     */
     public function getTagList()
     {
         return $this->tagList;
