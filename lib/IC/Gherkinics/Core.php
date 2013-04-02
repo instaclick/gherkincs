@@ -86,6 +86,10 @@ final class Core
      */
     public function scan($path)
     {
+        if (is_file($path)) {
+            return $this->pathToFeedbackMap[$path] = $this->validate($subPath);
+        }
+        
         foreach (glob($path) as $subPath) {
             if (is_dir($subPath)) {
                 $this->scan($subPath . '/*');

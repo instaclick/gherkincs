@@ -50,7 +50,7 @@ class LexerTest extends \PHPUnit_Framework_TestCase
      *
      * @return array
      */
-    private function getSample()
+    public function getSample()
     {
         $content = <<<ENDING
 Feature: Some terse yet descriptive text of what is desired
