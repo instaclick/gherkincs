@@ -81,6 +81,8 @@ class HtmlPrinter
 
             $segmentList = array();
 
+            print $relativePath . PHP_EOL;
+
             preg_match(
                 '/(?P<directory>.+)\/(?P<name>[^\.]+)\.(?P<extension>.+)$/',
                 $relativePath,

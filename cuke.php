@@ -88,7 +88,7 @@ function main($argumentList)
 
     $output->writeln(PHP_EOL . 'Analyzing feature files...');
 
-    $pathToFeedbackMap = $cuke->scan($targetPath . '/*');
+    $pathToFeedbackMap = $cuke->scan(is_dir($targetPath) ? $targetPath . '/*' : $targetPath);
 
     $output->writeln('');
 

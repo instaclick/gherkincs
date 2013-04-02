@@ -87,9 +87,11 @@ final class Core
     public function scan($path)
     {
         if (is_file($path)) {
-            return $this->pathToFeedbackMap[$path] = $this->validate($subPath);
+            $this->scanFile($path);
+
+            return $this->pathToFeedbackMap;
         }
-        
+
         foreach (glob($path) as $subPath) {
             if (is_dir($subPath)) {
                 $this->scan($subPath . '/*');
@@ -97,21 +99,31 @@ final class Core
                 continue;
             }
 
-            if ( ! preg_match('/\.feature/', $subPath)) {
-                continue;
-            }
-
-            $feedbackMap = $this->validate($subPath);
-
-            $this->output->write($feedbackMap->count() > 0 ? '!' : '.');
-
-            if ($feedbackMap->count() === 0) {
-                continue;
-            }
-
-            $this->pathToFeedbackMap[$subPath] = $this->validate($subPath);
+            $this->scanFile($subPath);
         }
 
         return $this->pathToFeedbackMap;
+    }
+
+    /**
+     * Scan an individual file.
+     *
+     * @param string $path file path
+     */
+    private function scanFile($path)
+    {
+        if ( ! preg_match('/\.feature$/', $path)) {
+            return;
+        }
+
+        $feedbackMap = $this->validate($path);
+
+        $this->output->write($feedbackMap->count() > 0 ? '!' : '.');
+
+        if ($feedbackMap->count() === 0) {
+            return;
+        }
+
+        $this->pathToFeedbackMap[$path] = $this->validate($path);
     }
 }
