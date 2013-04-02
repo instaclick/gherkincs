@@ -14,16 +14,26 @@ use IC\Gherkinics\Feedback\FileFeedback;
  */
 class CodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    /**
+     * Test Setup
+     */
+    protected function setUp()
     {
         $this->analyzer = new CodingStyleChecker();
         $this->feedback = new FileFeedback();
     }
 
     /**
+     * Test Case
+     *
+     * @param integer $expectedFeedbackCount
+     * @param string  $type
+     * @param string  $rawContext
+     * @param array   $expectedPatternMap
+     *
      * @dataProvider getSampleForIndentation
      */
-    public function testIndentation($expectedFeedbackCount, $type, $rawContext, $expectedPatternMap = array())
+    public function testIndentation($expectedFeedbackCount, $type, $rawContext, array $expectedPatternMap = array())
     {
         $token = $this->createMock($type, $rawContext);
 
@@ -50,6 +60,11 @@ class CodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Data Provider
+     *
+     * @return array
+     */
     public function getSampleForIndentation()
     {
         return array(
@@ -139,6 +154,14 @@ class CodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Create a mock token
+     *
+     * @param string $type
+     * @param string $rawContext
+     *
+     * @return \IC\Gherkinics\Model\Token
+     */
     private function createMock($type, $rawContext)
     {
         if ($type !== 'Token') {
