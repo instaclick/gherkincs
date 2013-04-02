@@ -39,8 +39,7 @@ class SemanticAnalyzer implements AnalyzerInterface
         foreach ($tokenList as $token) {
             $fileFeedback->setCurrentToken($token);
 
-            if (
-                $token instanceof Model\Node
+            if ($token instanceof Model\Node
                 || $token instanceof Model\Blank
                 || $token instanceof Model\Feature
                 || $token instanceof Model\TagLine
@@ -78,8 +77,7 @@ class SemanticAnalyzer implements AnalyzerInterface
      */
     public function assertContextFlow(Model\Token $token, FileFeedback $fileFeedback)
     {
-        if (
-            ! $this->previousToken
+        if ( ! $this->previousToken
             && ! (
                 $token instanceof Model\Precondition
                 || $token instanceof Model\Action
@@ -89,8 +87,7 @@ class SemanticAnalyzer implements AnalyzerInterface
             $fileFeedback->add($token->makeComment('The continuation must not be at the beginning of the block'));
         }
 
-        if (
-            $this->previousToken instanceof Model\Precondition
+        if ($this->previousToken instanceof Model\Precondition
             && ! (
                 $token instanceof Model\Continuation
                 || $token instanceof Model\Action
@@ -100,8 +97,7 @@ class SemanticAnalyzer implements AnalyzerInterface
             $fileFeedback->add($token->makeComment('The precondition should be followed by an action, assertion or continuation'));
         }
 
-        if (
-            $this->previousToken instanceof Model\Action
+        if ($this->previousToken instanceof Model\Action
             && ! (
                 $token instanceof Model\Continuation
                 || $token instanceof Model\Assertion
@@ -110,8 +106,7 @@ class SemanticAnalyzer implements AnalyzerInterface
             $fileFeedback->add($token->makeComment('The action should be followed by an assertion or continuation'));
         }
 
-        if (
-            $this->previousToken instanceof Model\Assertion
+        if ($this->previousToken instanceof Model\Assertion
             && ! (
                 $token instanceof Model\Continuation
                 || $token instanceof Model\Precondition
@@ -135,8 +130,7 @@ class SemanticAnalyzer implements AnalyzerInterface
         $isPossibleAction    = preg_match('/ (fill|click|select|follow) /', $token->getContext());
         $isPossibleAssertion = preg_match('/ (must|should) /', $token->getContext());
 
-        if (
-            $isPossibleAction
+        if ($isPossibleAction
             && ! $isPossibleAssertion
             && ! (
                 $token instanceof Model\Action
@@ -148,8 +142,7 @@ class SemanticAnalyzer implements AnalyzerInterface
             $fileFeedback->add($token->makeComment('The context suggests an precondition/action but the prefix does not'));
         }
 
-        if (
-            $isPossibleAssertion
+        if ($isPossibleAssertion
             && ! $isPossibleAction
             && ! $token instanceof Model\Assertion
             && ! ($this->previousToken instanceof Model\Assertion && $token instanceof Model\Continuation)

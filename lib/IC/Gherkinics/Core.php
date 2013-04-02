@@ -98,16 +98,16 @@ final class Core
             }
 
             $feedbackMap = $this->validate($subPath);
-            
+
             $this->output->write($feedbackMap->count() > 0 ? '!' : '.');
-            
+
             if ($feedbackMap->count() === 0) {
                 continue;
             }
 
             $this->pathToFeedbackMap[$subPath] = $this->validate($subPath);
         }
-        
+
         return $this->pathToFeedbackMap;
     }
 }

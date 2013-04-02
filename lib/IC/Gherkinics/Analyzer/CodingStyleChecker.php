@@ -79,7 +79,6 @@ class CodingStyleChecker implements AnalyzerInterface
                 ));
 
                 break;
-
             case $token instanceof Model\Background:
             case $token instanceof Model\Scenario:
                 if ($indentationLevel === 1) {
@@ -91,7 +90,6 @@ class CodingStyleChecker implements AnalyzerInterface
                 ));
 
                 break;
-
             case $token instanceof Model\Precondition:
             case $token instanceof Model\Action:
             case $token instanceof Model\Assertion:
@@ -106,7 +104,6 @@ class CodingStyleChecker implements AnalyzerInterface
                 ));
 
                 break;
-
             case $token instanceof Model\TabularData:
                 if ($indentationLevel === 3) {
                     break;
@@ -133,7 +130,7 @@ class CodingStyleChecker implements AnalyzerInterface
     /**
      * Produce a comment about improper indentation.
      *
-     * @param integer $identationLevel       the indentation level
+     * @param integer $indentationLevel      the indentation level
      * @param integer $numberOfLeadingSpaces the number of leading spaces
      *
      * @return string

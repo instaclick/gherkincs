@@ -35,10 +35,12 @@
     },
     "require-dev": {
         "phpunit/PHPUnit": ">=3.7.x-dev",
-        "instaclick/php-code-sniffer": "dev-patch-3",
+        "phpmd/phpmd": "1.4.*",
+        "instaclick/php-code-sniffer": "dev-patch-1",
         "instaclick/symfony2-coding-standard": "dev-remaster",
         "instaclick/object-calisthenics-sniffs": "dev-master",
         "instaclick/coding-standard": "dev-master",
-        "instaclick/phpcpd": "dev-patch-2"
+        "instaclick/phpcpd": "dev-patch-2",
+        "phploc/phploc": "dev-patch-1"
     }
 }
