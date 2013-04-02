@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+error_reporting(E_ALL | E_STRICT);
+
+(@include_once __DIR__ . '/../vendor/autoload.php') || @include_once __DIR__ . '/../../../../vendor/autoload.php';
+
+if (!preg_grep('/^--standard(=|$)/', $_SERVER['argv'])) {
+    $command = array_shift($_SERVER['argv']);
+    array_unshift($_SERVER['argv'], $command, '--standard=' . __DIR__ . '/../vendor/instaclick/coding-standard/Instaclick');
+    $_SERVER['argc'] = count($_SERVER['argv']);
+}
+
+if ((boolean) ini_get('register_argc_argv') === true) {
+    $argv = $_SERVER['argv'];
+    $argc = $_SERVER['argc'];
+}
+
+// Optionally use PHP_Timer to print time/memory stats for the run.
+// Note that the reports are the ones who actually print the data
+// as they decide if it is ok to print this data to screen.
+@include_once 'PHP/Timer.php';
+if (class_exists('PHP_Timer', false) === true) {
+    PHP_Timer::start();
+}
+
+if (is_file(dirname(__FILE__).'/../CodeSniffer/CLI.php') === true) {
+    @include_once dirname(__FILE__).'/../CodeSniffer/CLI.php';
+} else {
+    @include_once 'PHP/CodeSniffer/CLI.php';
+}
+
+$phpcs = new PHP_CodeSniffer_CLI();
+$phpcs->checkRequirements();
+
+$numErrors = $phpcs->process();
+if ($numErrors === 0) {
+    exit(0);
+} else {
+    exit(1);
+}

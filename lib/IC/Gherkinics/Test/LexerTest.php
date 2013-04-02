@@ -13,19 +13,25 @@ use IC\Gherkinics\Lexer;
  */
 class LexerTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    /**
+     * Test Setup
+     */
+    protected function setUp()
     {
         $this->lexer = new Lexer();
     }
 
     /**
+     * Test Case
+     *
+     * @param integer $content
+     * @param string  $typeSequence
+     *
      * @dataProvider getSample
      */
     public function testStructure($content, $typeSequence)
     {
         $tokenList = $this->lexer->analyze($content);
-
-        print PHP_EOL;
 
         for ($i = 0, $l = count($tokenList); $i < $l; $i++) {
             $token        = $tokenList[$i];
@@ -39,7 +45,12 @@ class LexerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function getSample()
+    /**
+     * Data Provider
+     *
+     * @return array
+     */
+    private function getSample()
     {
         $content = <<<ENDING
 Feature: Some terse yet descriptive text of what is desired
