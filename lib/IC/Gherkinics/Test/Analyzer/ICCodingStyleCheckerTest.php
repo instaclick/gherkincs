@@ -14,13 +14,22 @@ use IC\Gherkinics\Feedback\FileFeedback;
  */
 class ICCodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    /**
+     * Test Setup
+     */
+    protected function setUp()
     {
         $this->analyzer = new ICCodingStyleChecker();
         $this->feedback = new FileFeedback();
     }
 
     /**
+     * Test Case
+     *
+     * @param integer $expectedFeedbackCount
+     * @param string  $rawContext
+     * @param array   $expectedPatternMap
+     *
      * @dataProvider getSampleTokenListForTagLines
      */
     public function test($expectedFeedbackCount, $rawContext, $expectedPatternMap = array())
@@ -50,6 +59,11 @@ class ICCodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * Data Provider
+     *
+     * @return array
+     */
     public function getSampleTokenListForTagLines()
     {
         return array(
@@ -84,6 +98,14 @@ class ICCodingStyleCheckerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Create a mock token
+     *
+     * @param string $type
+     * @param string $rawContext
+     *
+     * @return \IC\Gherkinics\Model\Token
+     */
     private function createMock($type, $rawContext)
     {
         if ($type !== 'Token') {

@@ -14,13 +14,22 @@ use IC\Gherkinics\Feedback\FileFeedback;
  */
 class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
 {
-    public function setUp()
+    /**
+     * Test Setup
+     */
+    protected function setUp()
     {
         $this->analyzer = new SemanticAnalyzer();
         $this->feedback = new FileFeedback();
     }
 
     /**
+     * Test Case for Context Flow
+     *
+     * @param integer $expectedMessageCount
+     * @param string  $previousType
+     * @param string  $currentType
+     *
      * @dataProvider getNodeForContextFlowTest
      */
     public function testPositiveForContextFlow($expectedMessageCount, $previousType, $currentType)
@@ -40,9 +49,16 @@ class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test Case for Semantic Quality
+     *
+     * @param integer $expectedMessageCount
+     * @param string  $previousType
+     * @param string  $currentType
+     * @param string  $context
+     *
      * @dataProvider getNodeForQualityTest
      */
-    public function testQuality($expectedMessageCount, $previousType, $currentType, $context)
+    public function testSemanticQuality($expectedMessageCount, $previousType, $currentType, $context)
     {
         if ($previousType) {
             $this->analyzer->setPreviousToken($this->createMock($previousType, 1, null));
@@ -58,6 +74,11 @@ class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Data Provider for Context Flow Tests
+     *
+     * @return array
+     */
     public function getNodeForContextFlowTest()
     {
         return array(
@@ -83,6 +104,11 @@ class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Data Provider for Semantic Quality Tests
+     *
+     * @return array
+     */
     public function getNodeForQualityTest()
     {
         return array(
@@ -110,6 +136,15 @@ class SemanticAnalyzerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Create a mock token
+     *
+     * @param string  $type
+     * @param integer $id
+     * @param string  $context
+     *
+     * @return \IC\Gherkinics\Model\Token
+     */
     private function createMock($type, $id, $context)
     {
         if ($type !== 'Token') {
