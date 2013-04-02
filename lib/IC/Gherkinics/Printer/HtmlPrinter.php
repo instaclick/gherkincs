@@ -145,9 +145,8 @@ class HtmlPrinter
     /**
      * Print summary
      *
-     * @param string $templatePath
-     * @param string $outputName
-     * @param array  $contextVariableMap
+     * @param array $pathToFeedbackMap
+     * @param array $pathToDataMap
      */
     private function printSummary(array $pathToFeedbackMap, array $pathToDataMap)
     {
