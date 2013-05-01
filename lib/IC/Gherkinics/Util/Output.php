@@ -28,6 +28,6 @@ class Output
      */
     public function writeln($content)
     {
-        print $content . PHP_EOL;
+        printf('%s%s', $content, PHP_EOL);
     }
 }

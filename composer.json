@@ -6,10 +6,6 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:instaclick/serializer.git"
-        },
-        {
-            "type": "vcs",
             "url": "git@github.com:instaclick/PHP_CodeSniffer.git"
         },
         {
@@ -19,14 +15,6 @@
         {
             "type": "vcs",
             "url": "git@github.com:instaclick/CodingStandard.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:instaclick/phpcpd.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:instaclick/phploc.git"
         }
     ],
     "require": {
@@ -35,12 +23,9 @@
     },
     "require-dev": {
         "phpunit/PHPUnit": ">=3.7.x-dev",
-        "phpmd/phpmd": "1.4.*",
         "instaclick/php-code-sniffer": "dev-patch-1",
         "instaclick/symfony2-coding-standard": "dev-remaster",
         "instaclick/object-calisthenics-sniffs": "dev-master",
-        "instaclick/coding-standard": "dev-master",
-        "instaclick/phpcpd": "dev-patch-2",
-        "phploc/phploc": "dev-patch-1"
+        "instaclick/coding-standard": "dev-master"
     }
 }
