@@ -12,6 +12,11 @@ require_once 'vendor/autoload.php';
 
 $basePath = dirname(__FILE__);
 
+/**
+ * Local Auto Loader
+ *
+ * @param string $className the namespace
+ */
 function __autoload($className)
 {
     global $basePath;
@@ -30,6 +35,11 @@ use IC\Gherkinics\Lexer;
 use IC\Gherkinics\Util\Output;
 use IC\Gherkinics\Printer;
 
+/**
+ * Main
+ *
+ * @param array $argumentList the argument list
+ */
 function main($argumentList)
 {
     global $basePath;
@@ -102,8 +112,8 @@ function main($argumentList)
     switch (true) {
         case $optionMap['html']['index'] !== null:
             $printer = new Printer\HtmlPrinter(
-                $basePath . '/view',   # template pool
-                $basePath . '/static', # static pool
+                $basePath . '/view', // template pool
+                $basePath . '/static', // static pool
                 $optionMap['html']['value'],
                 $targetPath
             );
