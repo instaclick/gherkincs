@@ -118,7 +118,7 @@ class HtmlPrinter
      */
     private function copyStaticResource()
     {
-        exec(sprintf('cp -r %s %s', $this->resourcePath, $this->outputPath));
+        exec(sprintf('cp -vr %s %s', $this->resourcePath, $this->outputPath));
     }
 
     /**

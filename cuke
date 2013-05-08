@@ -12,22 +12,6 @@ require_once 'vendor/autoload.php';
 
 $basePath = dirname(__FILE__);
 
-/**
- * Local Auto Loader
- *
- * @param string $className the namespace
- */
-function __autoload($className)
-{
-    global $basePath;
-
-    $className = preg_replace('@\\\\@', '/', $className);
-
-    require_once "$basePath/lib/$className.php";
-}
-
-spl_autoload_register('__autoload');
-
 use IC\Gherkinics\AnalyzerManager;
 use IC\Gherkinics\Analyzer;
 use IC\Gherkinics\Core;
