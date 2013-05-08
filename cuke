@@ -53,15 +53,15 @@ function main($argumentList)
             'value' => null,
         ),
     );
-    
+
     $hasHtmlFlag = ($optionMap['html']['index'] !== null && $optionMap['html']['index'] >= 0);
 
     if ($hasHtmlFlag) {
         $optionMap['html']['value'] = $argumentList[$optionMap['html']['index'] + 1];
     }
-    
+
     // Detect the absolute path (UNIX only).
-    if ($hasHtmlFlag && preg_match('/^\//')) {
+    if ($hasHtmlFlag && preg_match('/^\//', $optionMap['html']['value'])) {
         $optionMap['html']['value'] = getcwd() . '/' . $optionMap['html']['value'];
     }
 
