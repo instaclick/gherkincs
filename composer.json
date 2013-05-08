@@ -1,5 +1,5 @@
 {
-    "name": "instaclick/gherkinics",
+    "name": "instaclick/gherkincs",
     "description": "Code Sniffer and Semantic Analyzer for Gherkin",
     "keywords": ["behat", "gherkin", "sniffer"],
     "minimum-stability": "dev",
