@@ -1,8 +1,16 @@
 {
     "name": "instaclick/gherkinics",
     "description": "Code Sniffer and Semantic Analyzer for Gherkin",
+    "keywords": ["behat", "gherkin", "sniffer"],
     "minimum-stability": "dev",
-    "license": "NONE",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Juti Noppornpitak",
+            "email": "jnopporn@shiroyuki.com",
+            "role": "Developer"
+        }
+    ],
     "repositories": [
         {
             "type": "vcs",
@@ -27,5 +35,10 @@
         "instaclick/symfony2-coding-standard": "dev-remaster",
         "instaclick/object-calisthenics-sniffs": "dev-master",
         "instaclick/coding-standard": "dev-master"
-    }
+    },
+    "autoload": {
+        "psr-0": {
+            "IC": "lib/"
+       }
+    },
 }
