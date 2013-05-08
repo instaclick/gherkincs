@@ -97,7 +97,7 @@ function main($argumentList)
             $printer = new Printer\HtmlPrinter(
                 $basePath . '/view',   # template pool
                 $basePath . '/static', # static pool
-                $basePath . '/' . $optionMap['html']['value'],
+                $optionMap['html']['value'],
                 $targetPath
             );
 
