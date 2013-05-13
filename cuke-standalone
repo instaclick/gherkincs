@@ -1,0 +1,11 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Cuke - Coding Standard Checker and Semantic Analyzer for Gherkin
+ *
+ * @copyright 2013 Instaclick Inc.
+ *
+ * @author Juti Noppornpitak <jnopporn@shiroyuki.com>
+ */
+require_once 'autoloader.php';
+require_once 'cuke';

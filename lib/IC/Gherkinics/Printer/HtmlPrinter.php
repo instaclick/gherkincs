@@ -61,7 +61,7 @@ class HtmlPrinter
         }
 
         if ( ! file_exists($outputPath)) {
-            mkdir($path);
+            mkdir($outputPath) or die('Unable to create the report folder');
         }
     }
 

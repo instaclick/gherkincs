@@ -55,7 +55,7 @@ function main($argumentList)
     }
 
     // Detect the absolute path (UNIX only).
-    if ($hasHtmlFlag && preg_match('/^\//', $optionMap['html']['value'])) {
+    if ($hasHtmlFlag && ! preg_match('/^\//', $optionMap['html']['value'])) {
         $optionMap['html']['value'] = getcwd() . '/' . $optionMap['html']['value'];
     }
 
