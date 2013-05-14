@@ -8,13 +8,43 @@ By Juti Noppornpitak
 
 ## Installation
 
-To use normally, run `composer.phar install`.
+### Standalone
 
-If you plan on developing or extending functionality, run `composer.phar install --dev`.
+At the root directory where Gherkin CS's `composer.json` is,
+
+**Installation (Normal):** run `composer.phar install`
+
+**Installation (DEV):** run `composer.phar install --dev`
+
+**Executable:** `cuke-standalone`.
+
+### Composer with Packagist
+
+**Installation:** Add `"instaclick/gherkincs": "dev-master"` in the `require` or `require-dev` section of the
+project's `composer.json`.
+
+**Executable:** `vendor/bin/cuke`.
 
 ## Usage
 
-To use this tool, please run `php cuke.php [--html <directory_to_put_reports>] <configuration_file_path> <directory_path_to_scan>`.
+Define `cuke` as either `cuke-standalone` or `vendor/bin/cuke`.
+
+``` bash
+cuke [--jcs <directory_to_put_report>] [--html <directory_to_put_reports>] <configuration_file_path> <directory_path_to_scan>
+```
+
+where `--html` is to produce a set of reports in HTML and `--jcs` is to produce a checkstyle-format report for Jenkins/Hudson CI.
+
+Please note that:
+
+* by default, the report will be displayed on the standard output,
+* `--html` will be used if both `--jcs` and `--html` are given.
+
+For example,
+
+``` bash
+cuke --jcs darkside.xml config.xml jedi/
+```
 
 ## Available Analyzers
 

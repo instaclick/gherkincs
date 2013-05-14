@@ -49,12 +49,8 @@ class JenkinsReportPrinter
             $environmentOption
         );
 
-        if (file_exists($outputPath) && ! is_dir($outputPath)) {
+        if (file_exists($outputPath) || is_dir($outputPath)) {
             throw new \RuntimeException('The path (' . $outputPath . ') exists but is not a directory.');
-        }
-
-        if ( ! file_exists($outputPath)) {
-            mkdir($outputPath) or die('Unable to create the report folder');
         }
     }
 
@@ -115,7 +111,7 @@ class JenkinsReportPrinter
      */
     private function render($templatePath, $contextVariableMap = array())
     {
-        $output $this->environment->render($templatePath, $contextVariableMap);
+        $output = $this->environment->render($templatePath, $contextVariableMap);
 
         // Pretty print
         $output = preg_replace('/(>)(<file)/', "\${1}\n    \${2}", $output);
@@ -130,19 +126,17 @@ class JenkinsReportPrinter
      * Export the rendered report to file
      *
      * @param string $templatePath
-     * @param string $outputName
      * @param array  $contextVariableMap
      */
-    private function export($templatePath, $outputName, $contextVariableMap = array())
+    private function export($templatePath, $contextVariableMap = array())
     {
-        $filePath = $this->outputPath . '/' . $outputName;
-        $output   = $this->render($templatePath, $contextVariableMap);
+        $output = $this->render($templatePath, $contextVariableMap);
 
-        if (file_exists($filePath)) {
-            unlink($filePath);
+        if (file_exists($this->outputPath)) {
+            unlink($this->outputPath);
         }
 
-        file_put_contents($filePath, $output);
+        file_put_contents($this->outputPath, $output);
     }
 
     /**
@@ -161,7 +155,6 @@ class JenkinsReportPrinter
 
         $this->export(
             'checkstyle.xml.twig',
-            'gherkin.checkstyle.xml',
             array(
                 'relativePathToDataMap' => $relativePathToDataMap,
             )

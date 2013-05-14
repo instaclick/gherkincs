@@ -86,7 +86,7 @@ function main($argumentList)
     $argumentLength = count($argumentList);
 
     if ($argumentLength < 2) {
-        $output->writeln('USAGE: cuke [--jcs /path/to/directory/for/report] [--html /path/to/directory/for/report] /path/to/config_file /path/pattern/to/scan');
+        $output->writeln('USAGE: cuke [--jcs /path/for/report] [--html /path/to/directory/for/report] /path/to/config_file /path/pattern/to/scan');
 
         exit(1);
     }
