@@ -100,6 +100,20 @@ abstract class Token
     }
 
     /**
+     * Retrieve the class name (Java style)
+     *
+     * @return string
+     */
+    final public function getJavaClassName()
+    {
+        if ( ! $this->className) {
+            $this->className = preg_replace('/\\\/', '.', get_class($this));
+        }
+
+        return $this->className;
+    }
+
+    /**
      * Define the previous token
      *
      * @param \IC\Gherkinics\Model\Token|null $previous

@@ -20,6 +20,53 @@ use IC\Gherkinics\Util\Output;
 use IC\Gherkinics\Printer;
 
 /**
+ * Check if the flag is given
+ *
+ * @param string $flagName     the flag name
+ * @param array  $argumentList the list of arguments
+ *
+ * @return boolean
+ */
+function hasFlag($flagName, array $argumentList)
+{
+    return in_array('--' . $flagName, $argumentList);
+}
+
+/**
+ * Retrieve the flag index
+ *
+ * @param string $flagName     the flag name
+ * @param array  $argumentList the list of arguments
+ *
+ * @return string|null
+ */
+function getFlagIndex($flagName, array $argumentList)
+{
+    return hasFlag($flagName, $argumentList) ? array_search('--' . $flagName, $argumentList) : null;
+}
+
+/**
+ * Retrieve the flag value
+ *
+ * @param string  $flagName     the flag name
+ * @param array   $argumentList the list of arguments
+ * @param integer $flagIndex    the flag index
+ *
+ * @return boolean
+ */
+function getFlagFilePathValue($flagName, array $argumentList, $flagIndex)
+{
+    $value = $argumentList[$flagIndex + 1];
+
+    // Detect the absolute path (UNIX only).
+    if ( ! preg_match('/^\//', $value)) {
+        $value = getcwd() . '/' . $value;
+    }
+
+    return $value;
+}
+
+/**
  * Main
  *
  * @param array $argumentList the argument list
@@ -28,35 +75,36 @@ function main($argumentList)
 {
     global $basePath;
 
+    static $validOutputOptionList = array(
+        'jcs', // Jenkins Checkstyle
+        'html', // HTML
+    );
+
     $output         = new Output();
     $manager        = new AnalyzerManager();
     $cuke           = new Core();
     $argumentLength = count($argumentList);
 
     if ($argumentLength < 2) {
-        $output->writeln('USAGE: cuke [--html /path/to/directory/for/report] /path/to/config_file /path/pattern/to/scan');
+        $output->writeln('USAGE: cuke [--jcs /path/to/directory/for/report] [--html /path/to/directory/for/report] /path/to/config_file /path/pattern/to/scan');
 
         exit(1);
     }
 
     $configPath = $argumentList[$argumentLength - 2];
     $targetPath = $argumentList[$argumentLength - 1];
-    $optionMap  = array(
-        'html' => array(
-            'index' => in_array('--html', $argumentList) ? array_search('--html', $argumentList) : null,
-            'value' => null,
-        ),
-    );
+    $optionMap  = array();
 
-    $hasHtmlFlag = ($optionMap['html']['index'] !== null && $optionMap['html']['index'] >= 0);
+    // Parse the arguments
+    foreach ($validOutputOptionList as $name) {
+        if ( ! hasFlag($name, $argumentList)) {
+            continue;
+        }
 
-    if ($hasHtmlFlag) {
-        $optionMap['html']['value'] = $argumentList[$optionMap['html']['index'] + 1];
-    }
+        $index = getFlagIndex($name, $argumentList);
+        $value = getFlagFilePathValue($name, $argumentList, $index);
 
-    // Detect the absolute path (UNIX only).
-    if ($hasHtmlFlag && ! preg_match('/^\//', $optionMap['html']['value'])) {
-        $optionMap['html']['value'] = getcwd() . '/' . $optionMap['html']['value'];
+        $optionMap[$name] = $value;
     }
 
     // Set up the analyzer manager.
@@ -93,20 +141,29 @@ function main($argumentList)
 
     $output->writeln('');
 
+    // Prepare the printer.
+    $printer = null;
+
     switch (true) {
-        case $optionMap['html']['index'] !== null:
+        case isset($optionMap['html']):
             $printer = new Printer\HtmlPrinter(
                 $basePath . '/view', // template pool
                 $basePath . '/static', // static pool
-                $optionMap['html']['value'],
+                $optionMap['html'],
+                $targetPath
+            );
+
+            break;
+        case isset($optionMap['jcs']):
+            $printer = new Printer\JenkinsReportPrinter(
+                $basePath . '/view', // template pool
+                $optionMap['jcs'],
                 $targetPath
             );
 
             break;
         default:
             $printer = new Printer\TerminalPrinter($output, $basePath);
-
-            break;
     }
 
     $printer->doPrint($pathToFeedbackMap);

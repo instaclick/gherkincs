@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+{% spaceless %}
+<checkstyle version="1.0.0">
+    {% for path, data in relativePathToDataMap %}
+        <file name="{{ path }}">
+            {% for feedback in data.feedbackMap.all %}
+                {% set token = feedback.token %}
+                {% for message in feedback.all %}
+                    <error column="1" severity="{{ token.id != null ? 'error' : 'warning' }}" line="{{ token.id | default(1) }}" message="{{ message }}" source="{{ token.javaClassName }}"/>
+                {% endfor %}
+            {% endfor %}
+        </file>
+    {% endfor %}
+</checkstyle>
+{% endspaceless %}
