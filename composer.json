@@ -31,7 +31,7 @@
     },
     "require-dev": {
         "phpunit/PHPUnit": ">=3.7.x-dev",
-        "instaclick/php-code-sniffer": "dev-patch-1",
+        "squizlabs/php_codesniffer": "1.5.0RC2",
         "instaclick/symfony2-coding-standard": "dev-remaster",
         "instaclick/object-calisthenics-sniffs": "dev-master",
         "instaclick/coding-standard": "dev-master"
