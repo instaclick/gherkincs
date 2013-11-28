@@ -1,4 +1,4 @@
-#!/usr/bin/env php
+#!/usr/bin/env php -d memory_limit=-1
 <?php
 /**
  * Cuke - Coding Standard Checker and Semantic Analyzer for Gherkin
@@ -80,6 +80,7 @@ function main($argumentList)
         'html', // HTML
     );
 
+    $startingTime   = microtime(true);
     $output         = new Output();
     $manager        = new AnalyzerManager();
     $cuke           = new Core();
@@ -169,8 +170,11 @@ function main($argumentList)
     $printer->doPrint($pathToFeedbackMap);
 
     $output->writeln('Analysis complete.');
-    $output->writeln(PHP_EOL . 'Please note that this tool only detects classic errors.');
-    $output->writeln('Bye bye!');
+
+    $output->writeln(PHP_EOL . 'Please note that this tool only detects classic errors.' . PHP_EOL);
+
+    $output->writeln(sprintf('Peak memory usage in MB: %.2f', memory_get_peak_usage(true) / 1024 / 1024));
+    $output->writeln(sprintf('Time elapsed in seconds: %.2f ', microtime(true) - $startingTime));
 
     if (count($pathToFeedbackMap) > 0) {
         exit(1);

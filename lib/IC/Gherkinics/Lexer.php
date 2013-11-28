@@ -77,7 +77,7 @@ final class Lexer
 
         $matches = array();
 
-        preg_match('/^\s*(?P<prefix>Feature:|Scenario[^:]*:|Given|Then|And|But|When)(?<context>.*)$/i', $content, $matches);
+        preg_match('/^\s*(?P<prefix>Feature:|Scenario[^:]*:|Given|Then|And|But|When)(?<context>.*)$/', $content, $matches);
 
         if ( ! $matches) {
             return new Model\Node($lineNo, $content, null);
