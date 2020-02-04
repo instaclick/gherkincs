@@ -30,7 +30,7 @@
         "twig/twig": "1.*"
     },
     "require-dev": {
-        "phpunit/PHPUnit": ">=3.7.x-dev",
+        "phpunit/phpunit": ">=3.7.x-dev",
         "squizlabs/php_codesniffer": "1.5.0RC2",
         "instaclick/symfony2-coding-standard": "dev-remaster",
         "instaclick/object-calisthenics-sniffs": "dev-master",
